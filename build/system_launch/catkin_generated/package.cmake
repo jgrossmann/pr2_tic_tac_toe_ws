@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "system_launch")
+set(system_launch_MAINTAINER "jvarley <jvarley@todo.todo>")
+set(system_launch_DEPRECATED "")
+set(system_launch_VERSION "0.0.0")
+set(system_launch_BUILD_DEPENDS )
+set(system_launch_RUN_DEPENDS )
+set(system_launch_BUILDTOOL_DEPENDS "catkin")

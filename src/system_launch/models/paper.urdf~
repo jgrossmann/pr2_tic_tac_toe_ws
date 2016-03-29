@@ -1,0 +1,34 @@
+
+<robot name="paper_model">
+  <link name="paper">
+    <inertial>
+      <mass value="0.002" />
+      <origin xyz="0 0 0.001" /> 
+      <inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="1.0"  iyz="0.0"  izz="1.0" />
+    </inertial>
+      <max_vel>0.1</max_vel>
+      <min_depth>0.001</min_depth>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+    <visual>
+      <!-- visual origin is defined w.r.t. link local coordinate system -->
+      <origin xyz="0 0 0.001" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://system_launch/models/mesh/paper.dae" scale="2 2 2" />
+      </geometry>
+    </visual>
+    <collision>
+      <!-- collision origin is defined w.r.t. link local coordinate system -->
+      <origin xyz="0 0 0.001" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://system_launch/models/mesh/paper.dae" scale="2 2 2" />
+      </geometry>
+    </collision>
+  </link>
+  <gazebo reference="paper">
+    <material>Gazebo/White</material>
+    <turnGravityOff>false</turnGravityOff>
+    <kp>1000.0</kp>
+    <kd>1.0</kd>
+  </gazebo>
+</robot>

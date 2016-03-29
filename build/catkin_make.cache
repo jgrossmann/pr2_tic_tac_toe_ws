@@ -1,0 +1,2 @@
+board_finder:system_launch
+-DCATKIN_DEVEL_PREFIX=/home/john/ROS/pr2_tic_tac_toe_ws/devel -DCMAKE_INSTALL_PREFIX=/home/john/ROS/pr2_tic_tac_toe_ws/install -G Unix Makefiles

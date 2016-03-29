@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "board_finder")
+set(board_finder_MAINTAINER "John Grossmann <jg3538@columbia.edu>")
+set(board_finder_DEPRECATED "")
+set(board_finder_VERSION "0.0.0")
+set(board_finder_BUILD_DEPENDS "rospy")
+set(board_finder_RUN_DEPENDS "rospy")
+set(board_finder_BUILDTOOL_DEPENDS "catkin")
