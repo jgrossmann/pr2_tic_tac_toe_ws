@@ -34,11 +34,14 @@ RM = /usr/bin/cmake -E remove -f
 # Escaping for special characters.
 EQUALS = =
 
+# The program to use to edit the cache.
+CMAKE_EDIT_COMMAND = /usr/bin/ccmake
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/john/ROS/pr2_tic_tac_toe_ws/src
+CMAKE_SOURCE_DIR = /home/jg3538/pr2_tic_tac_toe_ws/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/john/ROS/pr2_tic_tac_toe_ws/build
+CMAKE_BINARY_DIR = /home/jg3538/pr2_tic_tac_toe_ws/build
 
 # Utility rule file for _catkin_empty_exported_target.
 
@@ -56,10 +59,10 @@ system_launch/CMakeFiles/_catkin_empty_exported_target.dir/build: _catkin_empty_
 .PHONY : system_launch/CMakeFiles/_catkin_empty_exported_target.dir/build
 
 system_launch/CMakeFiles/_catkin_empty_exported_target.dir/clean:
-	cd /home/john/ROS/pr2_tic_tac_toe_ws/build/system_launch && $(CMAKE_COMMAND) -P CMakeFiles/_catkin_empty_exported_target.dir/cmake_clean.cmake
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build/system_launch && $(CMAKE_COMMAND) -P CMakeFiles/_catkin_empty_exported_target.dir/cmake_clean.cmake
 .PHONY : system_launch/CMakeFiles/_catkin_empty_exported_target.dir/clean
 
 system_launch/CMakeFiles/_catkin_empty_exported_target.dir/depend:
-	cd /home/john/ROS/pr2_tic_tac_toe_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/john/ROS/pr2_tic_tac_toe_ws/src /home/john/ROS/pr2_tic_tac_toe_ws/src/system_launch /home/john/ROS/pr2_tic_tac_toe_ws/build /home/john/ROS/pr2_tic_tac_toe_ws/build/system_launch /home/john/ROS/pr2_tic_tac_toe_ws/build/system_launch/CMakeFiles/_catkin_empty_exported_target.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/jg3538/pr2_tic_tac_toe_ws/src /home/jg3538/pr2_tic_tac_toe_ws/src/system_launch /home/jg3538/pr2_tic_tac_toe_ws/build /home/jg3538/pr2_tic_tac_toe_ws/build/system_launch /home/jg3538/pr2_tic_tac_toe_ws/build/system_launch/CMakeFiles/_catkin_empty_exported_target.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : system_launch/CMakeFiles/_catkin_empty_exported_target.dir/depend
 

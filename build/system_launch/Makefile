@@ -38,19 +38,22 @@ RM = /usr/bin/cmake -E remove -f
 # Escaping for special characters.
 EQUALS = =
 
+# The program to use to edit the cache.
+CMAKE_EDIT_COMMAND = /usr/bin/ccmake
+
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/john/ROS/pr2_tic_tac_toe_ws/src
+CMAKE_SOURCE_DIR = /home/jg3538/pr2_tic_tac_toe_ws/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/john/ROS/pr2_tic_tac_toe_ws/build
+CMAKE_BINARY_DIR = /home/jg3538/pr2_tic_tac_toe_ws/build
 
 #=============================================================================
 # Targets provided globally by CMake.
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running interactive CMake command-line interface..."
-	/usr/bin/cmake -i .
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/usr/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -120,14 +123,14 @@ test/fast: test
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/john/ROS/pr2_tic_tac_toe_ws/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/john/ROS/pr2_tic_tac_toe_ws/build/CMakeFiles /home/john/ROS/pr2_tic_tac_toe_ws/build/system_launch/CMakeFiles/progress.marks
-	cd /home/john/ROS/pr2_tic_tac_toe_ws/build && $(MAKE) -f CMakeFiles/Makefile2 system_launch/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/john/ROS/pr2_tic_tac_toe_ws/build/CMakeFiles 0
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/jg3538/pr2_tic_tac_toe_ws/build/CMakeFiles /home/jg3538/pr2_tic_tac_toe_ws/build/system_launch/CMakeFiles/progress.marks
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(MAKE) -f CMakeFiles/Makefile2 system_launch/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jg3538/pr2_tic_tac_toe_ws/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/john/ROS/pr2_tic_tac_toe_ws/build && $(MAKE) -f CMakeFiles/Makefile2 system_launch/clean
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(MAKE) -f CMakeFiles/Makefile2 system_launch/clean
 .PHONY : clean
 
 # The main clean target
@@ -136,22 +139,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/john/ROS/pr2_tic_tac_toe_ws/build && $(MAKE) -f CMakeFiles/Makefile2 system_launch/preinstall
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(MAKE) -f CMakeFiles/Makefile2 system_launch/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/john/ROS/pr2_tic_tac_toe_ws/build && $(MAKE) -f CMakeFiles/Makefile2 system_launch/preinstall
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(MAKE) -f CMakeFiles/Makefile2 system_launch/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/john/ROS/pr2_tic_tac_toe_ws/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 system_launch/CMakeFiles/_catkin_empty_exported_target.dir/rule:
-	cd /home/john/ROS/pr2_tic_tac_toe_ws/build && $(MAKE) -f CMakeFiles/Makefile2 system_launch/CMakeFiles/_catkin_empty_exported_target.dir/rule
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(MAKE) -f CMakeFiles/Makefile2 system_launch/CMakeFiles/_catkin_empty_exported_target.dir/rule
 .PHONY : system_launch/CMakeFiles/_catkin_empty_exported_target.dir/rule
 
 # Convenience name for target.
@@ -160,7 +163,7 @@ _catkin_empty_exported_target: system_launch/CMakeFiles/_catkin_empty_exported_t
 
 # fast build rule for target.
 _catkin_empty_exported_target/fast:
-	cd /home/john/ROS/pr2_tic_tac_toe_ws/build && $(MAKE) -f system_launch/CMakeFiles/_catkin_empty_exported_target.dir/build.make system_launch/CMakeFiles/_catkin_empty_exported_target.dir/build
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(MAKE) -f system_launch/CMakeFiles/_catkin_empty_exported_target.dir/build.make system_launch/CMakeFiles/_catkin_empty_exported_target.dir/build
 .PHONY : _catkin_empty_exported_target/fast
 
 # Help Target
@@ -188,6 +191,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/john/ROS/pr2_tic_tac_toe_ws/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

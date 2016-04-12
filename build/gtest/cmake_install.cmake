@@ -2,7 +2,7 @@
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  SET(CMAKE_INSTALL_PREFIX "/home/john/ROS/pr2_tic_tac_toe_ws/install")
+  SET(CMAKE_INSTALL_PREFIX "/home/jg3538/pr2_tic_tac_toe_ws/install")
 ENDIF(NOT DEFINED CMAKE_INSTALL_PREFIX)
 STRING(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

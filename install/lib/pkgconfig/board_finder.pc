@@ -1,8 +1,8 @@
-prefix=/home/john/ROS/pr2_tic_tac_toe_ws/install
+prefix=/home/jg3538/pr2_tic_tac_toe_ws/install
 
 Name: board_finder
 Description: Description of board_finder
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/john/ROS/pr2_tic_tac_toe_ws/install/lib 
+Libs: -L/home/jg3538/pr2_tic_tac_toe_ws/install/lib 
 Requires: 

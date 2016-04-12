@@ -1,8 +1,8 @@
-# Install script for directory: /home/john/ROS/pr2_tic_tac_toe_ws/src/system_launch
+# Install script for directory: /home/jg3538/pr2_tic_tac_toe_ws/src/system_launch
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  SET(CMAKE_INSTALL_PREFIX "/home/john/ROS/pr2_tic_tac_toe_ws/install")
+  SET(CMAKE_INSTALL_PREFIX "/home/jg3538/pr2_tic_tac_toe_ws/install")
 ENDIF(NOT DEFINED CMAKE_INSTALL_PREFIX)
 STRING(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -33,17 +33,17 @@ IF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 ENDIF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/john/ROS/pr2_tic_tac_toe_ws/build/system_launch/catkin_generated/installspace/system_launch.pc")
+  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/jg3538/pr2_tic_tac_toe_ws/build/system_launch/catkin_generated/installspace/system_launch.pc")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/system_launch/cmake" TYPE FILE FILES
-    "/home/john/ROS/pr2_tic_tac_toe_ws/build/system_launch/catkin_generated/installspace/system_launchConfig.cmake"
-    "/home/john/ROS/pr2_tic_tac_toe_ws/build/system_launch/catkin_generated/installspace/system_launchConfig-version.cmake"
+    "/home/jg3538/pr2_tic_tac_toe_ws/build/system_launch/catkin_generated/installspace/system_launchConfig.cmake"
+    "/home/jg3538/pr2_tic_tac_toe_ws/build/system_launch/catkin_generated/installspace/system_launchConfig-version.cmake"
     )
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/system_launch" TYPE FILE FILES "/home/john/ROS/pr2_tic_tac_toe_ws/src/system_launch/package.xml")
+  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/system_launch" TYPE FILE FILES "/home/jg3538/pr2_tic_tac_toe_ws/src/system_launch/package.xml")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
