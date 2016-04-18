@@ -15,14 +15,21 @@
 
   <!-- Add table to the world -->
   <node name="spawn_table" pkg="gazebo_ros" type="spawn_model" 
-   args="-urdf -file $(find system_launch)/models/table.urdf -model table -x 0.75 -y 0.5"
+   args="-urdf -file $(find system_launch)/models/table.urdf -model table -x 1.0 -y 0.0"
    respawn="false" output="screen" />
    
    <!-- Add paper to the world -->
    <node name="spawn_paper" pkg="gazebo_ros" type="spawn_model" 
-   args="-urdf -file $(find system_launch)/models/paper.urdf -model paper -x 0.5 -y 0.7 -z 0.55"
+   args="-urdf -file $(find system_launch)/models/paper.urdf -model paper -x 0.85 -y -0.6 -z 0.55"
    respawn="false" output="screen" />
 
+    <node name="spawn_O" pkg="gazebo_ros" type="spawn_model" 
+   args="-urdf -file $(find system_launch)/models/O.urdf -model O -x 0.85 -y -0.6 -z 0.6"
+   respawn="false" output="screen" />
 
-  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find system_launch)/launch/rviz.rviz"/> -->
+   <node name="spawn_X" pkg="gazebo_ros" type="spawn_model" 
+   args="-urdf -file $(find system_launch)/models/X.urdf -model X -x 0.85 -y -0.9 -z 0.6"
+   respawn="false" output="screen" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find system_launch)/launch/rviz.rviz"/>
 </launch>

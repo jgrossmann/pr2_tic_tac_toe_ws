@@ -906,6 +906,19 @@ _catkin_empty_exported_target/fast:
 	$(MAKE) -f system_launch/CMakeFiles/_catkin_empty_exported_target.dir/build.make system_launch/CMakeFiles/_catkin_empty_exported_target.dir/build
 .PHONY : _catkin_empty_exported_target/fast
 
+#=============================================================================
+# Target rules for targets named point_cloud_convertor
+
+# Build rule for target.
+point_cloud_convertor: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 point_cloud_convertor
+.PHONY : point_cloud_convertor
+
+# fast build rule for target.
+point_cloud_convertor/fast:
+	$(MAKE) -f board_finder/CMakeFiles/point_cloud_convertor.dir/build.make board_finder/CMakeFiles/point_cloud_convertor.dir/build
+.PHONY : point_cloud_convertor/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -977,6 +990,7 @@ help:
 	@echo "... visualization_msgs_generate_messages_py"
 	@echo "... move_head"
 	@echo "... _catkin_empty_exported_target"
+	@echo "... point_cloud_convertor"
 .PHONY : help
 
 

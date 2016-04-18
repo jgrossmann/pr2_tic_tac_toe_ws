@@ -152,6 +152,44 @@ depend:
 	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
+# Convenience name for target.
+board_finder/CMakeFiles/point_cloud_convertor.dir/rule:
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(MAKE) -f CMakeFiles/Makefile2 board_finder/CMakeFiles/point_cloud_convertor.dir/rule
+.PHONY : board_finder/CMakeFiles/point_cloud_convertor.dir/rule
+
+# Convenience name for target.
+point_cloud_convertor: board_finder/CMakeFiles/point_cloud_convertor.dir/rule
+.PHONY : point_cloud_convertor
+
+# fast build rule for target.
+point_cloud_convertor/fast:
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(MAKE) -f board_finder/CMakeFiles/point_cloud_convertor.dir/build.make board_finder/CMakeFiles/point_cloud_convertor.dir/build
+.PHONY : point_cloud_convertor/fast
+
+src/point_cloud_convertor.o: src/point_cloud_convertor.cpp.o
+.PHONY : src/point_cloud_convertor.o
+
+# target to build an object file
+src/point_cloud_convertor.cpp.o:
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(MAKE) -f board_finder/CMakeFiles/point_cloud_convertor.dir/build.make board_finder/CMakeFiles/point_cloud_convertor.dir/src/point_cloud_convertor.cpp.o
+.PHONY : src/point_cloud_convertor.cpp.o
+
+src/point_cloud_convertor.i: src/point_cloud_convertor.cpp.i
+.PHONY : src/point_cloud_convertor.i
+
+# target to preprocess a source file
+src/point_cloud_convertor.cpp.i:
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(MAKE) -f board_finder/CMakeFiles/point_cloud_convertor.dir/build.make board_finder/CMakeFiles/point_cloud_convertor.dir/src/point_cloud_convertor.cpp.i
+.PHONY : src/point_cloud_convertor.cpp.i
+
+src/point_cloud_convertor.s: src/point_cloud_convertor.cpp.s
+.PHONY : src/point_cloud_convertor.s
+
+# target to generate assembly for a file
+src/point_cloud_convertor.cpp.s:
+	cd /home/jg3538/pr2_tic_tac_toe_ws/build && $(MAKE) -f board_finder/CMakeFiles/point_cloud_convertor.dir/build.make board_finder/CMakeFiles/point_cloud_convertor.dir/src/point_cloud_convertor.cpp.s
+.PHONY : src/point_cloud_convertor.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -163,8 +201,12 @@ help:
 	@echo "... install/local"
 	@echo "... install/strip"
 	@echo "... list_install_components"
+	@echo "... point_cloud_convertor"
 	@echo "... rebuild_cache"
 	@echo "... test"
+	@echo "... src/point_cloud_convertor.o"
+	@echo "... src/point_cloud_convertor.i"
+	@echo "... src/point_cloud_convertor.s"
 .PHONY : help
 
 
