@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import rospy
 from sensor_msgs.msg import Image
-from sensor_msgs.msg import PointCloud2
 import cv2
 import numpy as np
 from cv_bridge import CvBridge, CvBridgeError
@@ -30,11 +29,9 @@ def callback(data):
 
 def listener():
 	rospy.init_node('camera_listener', anonymous=True)
-	#rospy.Subscriber("/wide_stereo/left/image_color", Image, callback)
-	rospy.Subscriber("/head_mount_kinect/depth/points", PointCloud2, callback)
+	rospy.Subscriber("/wide_stereo/left/image_color", Image, callback)
 	print("Starting listener")
-	while(done == False):
-		pass
+	rospy.spin()
 	
 if __name__ == '__main__':
 	listener()

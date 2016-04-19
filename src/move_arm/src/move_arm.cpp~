@@ -1,7 +1,7 @@
 #include <moveit/move_group_interface/move_group.h>
 #include <iostream>
  
-int move_arm(double x, double y, double z, double w, char arm)
+void move_arm(double x, double y, double z, double w, char arm)
 {
   if (arm == 'l') {
   moveit::planning_interface::MoveGroup l_arm_move_group("left_arm");
@@ -13,8 +13,8 @@ int move_arm(double x, double y, double z, double w, char arm)
   //l_arm_move_group.setRandomTarget();  
   l_arm_move_group.setPoseTarget(goal_end_effector_pose);
   // plan the motion and then move the group to the sampled target 
-  l_arm_move_group.asyncMove();
-  return 1; 
+  l_arm_move_group.asyncMove(); 
+  return;
   }
 
   if (arm == 'r') {
@@ -28,8 +28,8 @@ int move_arm(double x, double y, double z, double w, char arm)
   r_arm_move_group.setPoseTarget(goal_end_effector_pose);
   // plan the motion and then move the group to the sampled target 
   r_arm_move_group.asyncMove();
-  return 1;
+  return;
   }
 	
-  return 0;
+  return;
 }

@@ -20,7 +20,7 @@
    
    <!-- Add paper to the world -->
    <node name="spawn_paper" pkg="gazebo_ros" type="spawn_model" 
-   args="-urdf -file $(find system_launch)/models/paper.urdf -model paper -x 0.85 -y -0.6 -z 0.55"
+   args="-urdf -file $(find system_launch)/models/tic_tac_toe_board.urdf -model tic_tac_toe -x 0.85 -y 0 -z 0.6"
    respawn="false" output="screen" />
 
     <node name="spawn_O" pkg="gazebo_ros" type="spawn_model" 

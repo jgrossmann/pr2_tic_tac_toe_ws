@@ -4,6 +4,7 @@ from sensor_msgs.msg import Image
 import cv2
 import numpy as np
 from cv_bridge import CvBridge, CvBridgeError
+import board_vision_lib
 
 done = False
 
@@ -31,8 +32,7 @@ def listener():
 	rospy.init_node('camera_listener', anonymous=True)
 	rospy.Subscriber("/wide_stereo/left/image_color", Image, callback)
 	print("Starting listener")
-	while(done == False):
-		pass
+	rospy.spin()
 	
 if __name__ == '__main__':
 	listener()

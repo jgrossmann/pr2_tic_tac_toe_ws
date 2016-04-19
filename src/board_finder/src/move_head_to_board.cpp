@@ -65,14 +65,15 @@ public:
     while (ros::ok() && ++count <= n )
     {
       //Looks at a point forward (x=5m), slightly left (y=1m), and 1.2m up
-      lookAt("base_link", 4.0, 1.0, .5);
+      lookAt("base_link", 5.0, 1.0, 1.2);
 
       //Looks at a point forward (x=5m), slightly right (y=-1m), and 1.2m up
-      lookAt("base_link", 4.0, -1.0, .5);
+      lookAt("base_link", 5.0, -1.0, 1.2);
     }
-	lookAt("base_link", 2.0, 0.0, .1);
   }
 };
+
+find_board
 
 int main(int argc, char** argv)
 {
@@ -80,5 +81,5 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "robot_driver");
 
   RobotHead head;
-  head.shakeHead(2);
+  head.shakeHead(10);
 }

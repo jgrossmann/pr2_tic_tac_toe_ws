@@ -97,7 +97,7 @@ include_directories(${EIGEN_INCLUDE_DIRS})
 # )
 
 ## Declare a cpp executable
-add_executable(move_arm src/move_arm.cpp)
+add_executable(move_arm src/move_arm_main.cpp) #THIS LINE WAS CHANGED
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes

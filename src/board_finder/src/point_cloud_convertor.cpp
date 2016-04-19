@@ -10,6 +10,10 @@
 
 using namespace std;
 
+ros::Publisher publisher;
+
+
+
 void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
     ostringstream width;
 	width << msg->width;
@@ -57,6 +61,9 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 
 	cv::imwrite("kinect_image.png", imageFrame, compression_params);
 	ROS_INFO("wrote image");
+
+	//send message on publisher
+	//have to create a message type first
 }
 
 int main(int argc, char** argv) {
@@ -67,5 +74,8 @@ int main(int argc, char** argv) {
 						"/head_mount_kinect/depth_registered/points",
 						2,
 						callback);
+	//publisher = nh.advertise<std_msgs::String>("/kinect_image/xyz_and_rgb", 1);
+ 	//ros::Rate loop_rate(5);
+
 	ros::spin();
 }
