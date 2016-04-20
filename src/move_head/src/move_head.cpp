@@ -70,7 +70,7 @@ public:
       //Looks at a point forward (x=5m), slightly right (y=-1m), and 1.2m up
       lookAt("base_link", 4.0, -1.0, .5);
     }
-	lookAt("base_link", 2.0, 0.0, .1);
+	lookAt("base_link", 1.3, 0.0, .05);
   }
 };
 

@@ -11,7 +11,7 @@
   <include file="$(find pr2_gazebo)/launch/pr2_empty_world.launch"/>
 
    <!--Start up moveit in order to plan arm trajectories-->
-  <!--include file="$(find pr2_moveit_config)/launch/move_group.launch"/-->
+   <include file="$(find pr2_moveit_config)/launch/move_group.launch"/>
 
   <!-- Add table to the world -->
   <node name="spawn_table" pkg="gazebo_ros" type="spawn_model" 
