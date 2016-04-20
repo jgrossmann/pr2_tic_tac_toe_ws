@@ -41,5 +41,6 @@ def findBoard(req):
 	pass
 	
 
-
+if __name__ == '__main__':
+	moveHead('base_link', 
 
