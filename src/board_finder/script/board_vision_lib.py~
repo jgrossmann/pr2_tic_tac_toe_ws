@@ -308,8 +308,7 @@ if __name__ == '__main__':
 	#print(checkIntersection([[1, 1], [1, 2]], [[0, 2], [1, 2]]))
 	#find fits
 	
-	#want to get slopes or angles, make sure angle of lines are at about 90
-	#degress +- 5 degrees
+
 	print(getIntersection([(1,1), (1,2)], [(0, 2), (1, 2)]))
 	
 	
