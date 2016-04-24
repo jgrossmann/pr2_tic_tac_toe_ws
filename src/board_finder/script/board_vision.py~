@@ -5,85 +5,11 @@ import numpy as np
 import math
 from matplotlib.pyplot import *
 from collections import defaultdict
-
-angleRange = 5
-		
-class LineSegment():
-	
-	def __init__(self, point1, point2):
-		self.point1 = point1
-		self.point2 = point2
-		self.slope = None
-		self.slope = self.getSlope()
-		self.yInt = None
-		self.yInt = self.getYIntercept()
-		self.angle = None
-		self.angle = self.getAngle()
-		self.neighbor1 = None
-		self.neighbor2 = None
-		
-	def getSlope(self):
-		if(self.slope != None):
-			return self.slope
-			
-		xdif = self.point2.x - self.point1.x
-		ydif = self.point2.y - self.point2.y
-
-		if(xdif == 0):
-			return None
-	
-		return float(ydif / xdif)
+from Board import *
+from LineSegment import *
 
 
-	def getYIntercept(self):
-		if(self.yInt != None):
-			return self.yInt
-			
-		if(self.getSlope() == None):
-			return None
-			
-		return float(self.point1.y - self.getSlope()*self.point1.x)	
-		
-	def getAngle(self):
-		if(self.angle != None):
-			return self.angle
-
-		xdif = float(self.point2.x - self.point1.x)
-		ydif = float(self.point2.y - self.point1.y)
-		
-		angle = math.atan2(ydif, xdif)
-		if(angle < 0):
-			angle = angle + math.pi
-			
-		return int(round(math.degrees(angle)))
-		
-	def setNeighbor1(self, line, dist):
-		if(self.neighbor1 == None):
-			self.neighbor1 = (line, dist)
-			
-		if(dist < self.neighbor1[1]):
-			self.neighbor1 = (line, dist)
-			
-	def setNeighbor2(self, line, dist):
-		if(self.neighbor2 == None):
-			self.neighbor2 = (line, dist)
-			
-		if(dist < self.neighbor2[1]):
-			self.neighbor2 = (line, dist)
-		
-	#def getAngleDif(self, line2):
-	#	angle1 = self.getAngle()
-	#	angle2 = line2.getAngle()
-	#	
-	#	dif = angle2 - angle1
-	#	if(dif > math.pi):
-	#		dif =  -(dif - math.pi)
-	#	elif(dif < -math.pi):
-	#		dif = -(dif + math.pi)
-			
-	#	return dif
-		
-				
+angleRange = 5				
 		
 class Point():
 	
@@ -106,105 +32,6 @@ class Point():
 		return False
 		
 	
-class Square():
-	def __init__(self, line, angle):
-		self.top = None
-		self.right = None
-		self.bottom = None
-		self.left = None
-		self.setSides(line, angle)
-		
-	def setSides(self, line, angle):
-		
-		#case for neighbors being left and right
-		if(angle >= 45):
-			dist1 = line.point1.getDistance(line.neighbor1.point1)
-			dist2 = line.point2.getDistance(line.neighbor1.point2)
-			if(dist1 < dist2):
-				pass
-		
-	def isFull(self):
-		return (self.top != None and self.right != None
-			and self.bottom != None and self.left != None)
-
-
-class Board():
-	def __init__(self, outersquare, innersquares):
-		self.outline = outersquare
-		centers = self.getSquareCenters(innersquares)
-		if(len(centers) == 9):
-			self.squareCenters = centers
-		else :
-			self.squareCenters = self.getOrderedCenters(centers)
-		
-	
-	def getSquareCenters(self, squares):
-		centers = []
-		for square in squares:
-			x = square[0][0] + square[1][0] + square[2][0] + square[3][0]
-			x = int(x / 4)
-			y = square[0][1] + square[1][1] + square[2][1] + square[3][1]
-			y = int(y / 4)
-			
-			xtick = 0
-			ytick = 0
-			for point in self.outline:
-				if(x > point[0]):
-					xtick += 1
-				else:
-					xtick -= 1
-				
-				if(y > point[1]):
-					ytick += 1
-				else:
-					ytick -= 1
-				
-
-			if((xtick == 0 and ytick <= 2) or (ytick == 0 and xtick <= 2)):
-				if(Point(x,y).inList(centers) != True):	
-					centers.append(Point(x,y))
-					print('appending center '+str(x)+', '+str(y))
-		
-		return centers
-		
-		
-	def getOrderedCenters(self, centers):
-		line1 = LineSegment(Point(self.outline[0][0], self.outline[0][1]), 
-			Point(self.outline[1][0], self.outline[1][1]))
-		line2 = LineSegment(Point(self.outline[1][0], self.outline[1][1]),
-			Point(self.outline[2][0], self.outline[2][1]))
-		line3 = LineSegment(Point(self.outline[2][0], self.outline[2][1]),
-			Point(self.outline[3][0], self.outline[3][1]))
-		line4 = LineSegment(Point(self.outline[3][0], self.outline[3][1]),
-			Point(self.outline[0][0], self.outline[0][1]))
-		
-		clusters = createClusters(line1, line2, line3, line4)
-		
-		for center in centers:
-		
-			clusterIndex = 0
-			curCluster = None
-			
-			for cluster in clusters:
-				if(curCluster == None):
-					curCluster = (clusterIndex, cluster.distance(center))
-				else:
-					dist = cluster.distance(center)
-					if(dist < curCluster[1]):
-						curCluster = (clusterIndex, dist)
-						
-				clusterIndex += 1
-				
-			clusters[curCluster[0]].points.append(center)
-		
-		self.clusters = clusters
-		orderedCenters = []
-		for cluster in clusters:
-			cluster.update()
-			orderedCenters.append(cluster.center)
-			
-
-		return orderedCenters
 		
 	
 def createClusters(line1, line2, line3, line4):
@@ -217,7 +44,7 @@ def createClusters(line1, line2, line3, line4):
 	
 	height = line1.point1.getDistance(line4.point1)
 	
-	
+	print('cluster 1')
 	x = line1.point1.x
 	y = line1.point1.y
 	x += (line4.point1.x - line1.point1.x) * ratio
@@ -225,12 +52,15 @@ def createClusters(line1, line2, line3, line4):
 	y += (line4.point1.y - line1.point1.y) * ratio
 	y += (line2.point1.y - line1.point1.y) * ratio
 	clusters.append(Cluster(Point(x, y)))
+	print(x, y)
 	
+	print('cluster 2')
 	x = int(np.mean([line1.point2.x, line1.point1.x]))
 	y = int(np.mean([line1.point2.y, line1.point1.y]))
 	x += (line4.point1.x - line1.point1.x) * ratio
 	y += (line4.point1.y - line1.point1.y) * ratio
 	clusters.append(Cluster(Point(x,y)))
+	print x, y
 	
 	x = line1.point2.x
 	y = line1.point2.y
@@ -364,10 +194,10 @@ def find_squares(img):
 
 
 
-
-def houghLinesProb(name):
+def detectBoard(img, name=None):
 	squares = []
-	img = cv2.imread(name)
+	if(name != None):
+		img = cv2.imread(name)
 	#img = sobel(name)
 	gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	#cv2.imwrite('sobel.jpg', img)
@@ -377,6 +207,7 @@ def houghLinesProb(name):
 	contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
 	#print hierarchy
 	
+	#make this a separate function
 	for cnt in contours:
 		cnt_len = cv2.arcLength(cnt, True)
 		cnt = cv2.approxPolyDP(cnt, 0.02*cnt_len, True)
@@ -389,51 +220,144 @@ def houghLinesProb(name):
                         
 	#cv2.drawContours(img, squares, -1, (0, 255, 0), 1)
 	
-	print('outer')
-	print(squares[15])
+
 	outer, inner = isolateBoardSquares(squares)
 	#board = Board(squares[15], squares[0:15])
 	board = Board(outer, inner)
+	print('board created')
 	
+	maxRad = 0
+	if(board.innerSquares == None):
+		return None
+		
+	for square in board.innerSquares:
+		maxRad = int(max(maxRad, getLongestDimension(square)))
+	maxRad = (maxRad / 2) + 1
 	
 	#cv2.circle(img, (squares[15][0][0], squares[15][0][1]), 3, (0, 255, 0), -1)
 	
 	
 	#cv2.imwrite('contours.jpg', img)
 	
+	
 	for point in board.squareCenters:
 		print(point.x, point.y)
 		cv2.circle(img, (point.x, point.y), 3, (0, 255, 0), -1)
 	cv2.imwrite('squarecenters.jpg', img)
 
+	#try dilation if does not work well
+	circles = cv2.HoughCircles(edges, cv2.cv.CV_HOUGH_GRADIENT, 1, 20, param1=50, param2=40, minRadius=0, maxRadius=maxRad)
 	
-	minLineLength = 50
-	maxLineGap = 10
+	circles = np.uint16(np.around(circles))
+	for i in circles[0,:]:
+		cv2.circle(img, (i[0], i[1]), i[2], (0, 255, 0), 2)
+		cv2.circle(img, (i[0], i[1]), 2, (0, 0, 255), 3)
+		
+	board.setCircleLocations(circles)
+	
+	cv2.imwrite('circles.jpg', img)
+	
+	
+						
+	#CREATE A BORDER AROUND BOARD WITH AT LEAST 2 PIXEL PADDING
+	#THEN DO HOUGH LINES ON THAT PICTURE
+	minLineLength = 8
+	maxLineGap = 2
 	cv2.imwrite('cannydilated.jpg', cv2.dilate(edges, None))
-	lines = cv2.HoughLinesP(cv2.dilate(edges, None),1,np.pi/180,100,minLineLength,maxLineGap)
+	lines = cv2.HoughLinesP(edges,1,np.pi/180,15,minLineLength,maxLineGap)
+	
+	xLocations = detectXs(board, lines, maxRad, img)
+	
+	board.setXLocations(xLocations)
+	
+	print(board.boardState)
 
 	for x1,y1,x2,y2 in lines[0]:
 		cv2.line(img,(x1,y1),(x2,y2),(0,255,0),2)
 
 
 	cv2.imwrite('houghlines2.jpg',img)
-
-	
-	
-	#dst = cv2.cornerHarris(hough, 3, 3, 0.04)
-
-	#dst = cv2.dilate(dst, None)
-
-	#hough[dst>0.5*dst.max()] = [0, 0, 255]
-	#cv2.imwrite('corners.jpg', hough)
-	
-	print(len(img))
-	print(len(img[0]))
 	
 	return lines
 
-	#kmeans(lines, len(img[0]), len(img), 4)
 	
+
+def detectXs(board, lines, maxRad, img):
+	centers = board.getOpenCenters()
+	centerMap = defaultdict(list)
+	
+	proximity = maxRad * .65
+	
+	xLocations = np.zeros(9)
+	print(proximity)
+	print(centers[7][0].x, centers[7][0].y)
+
+	for x1,y1,x2,y2 in lines[0]:
+		p1 = Point(x1, y1)
+		p2 = Point(x2, y2)
+		
+		#print(p1.x, p1.y, p2.x, p2.y)
+		for center, index in centers:
+			
+			#print(center.x, center.y)
+			if(p1.getDistance(center) <= proximity or p2.getDistance(center) <= proximity):
+				centerMap[index].append(LineSegment(p1, p2))
+				break;
+				
+	#print(centerMap)
+	minDist = 1
+	
+	for center, lines in centerMap.iteritems():
+		if(center == 8):
+			for line in lines:
+				cv2.line(img,(line.point1.x,line.point1.y),(line.point2.x, line.point2.y),(255, 0, 0),2)
+	
+	cv2.imwrite('x.jpg', img)
+	
+	for center, lines in centerMap.iteritems():
+		if(center == 8):
+			for line in lines:
+				print(line.point1.x, line.point1.y, line.point2.x, line.point2.y)
+		otherLines = lines[:]
+		index = 0
+		count = 0
+		for line in lines:
+			del otherLines[index]
+			
+			for otherLine in otherLines:
+				if(line.point1.getDistance(otherLine.point1) <= minDist or
+					line.point1.getDistance(otherLine.point2) <= minDist or
+					line.point2.getDistance(otherLine.point1) <= minDist or
+					line.point2.getDistance(otherLine.point2) <= minDist):
+					
+					count += 1
+					if(count == 3):
+						break;
+						
+			if(count == 3):
+				break;
+				
+		if(count == 3):
+			xLocations[center] = 2
+			
+	
+	return xLocations
+			
+				
+	
+	
+def getLongestDimension(square):
+	p1 = Point(square[0][0], square[0][1])
+	p2 = Point(square[1][0], square[1][1])
+	p3 = Point(square[2][0], square[2][1])
+	p4 = Point(square[3][0], square[3][1])
+	
+	dist = p1.getDistance(p2)
+	dist = max(dist, p2.getDistance(p3))
+	dist = max(dist, p3.getDistance(p4))
+	dist = max(dist, p4.getDistance(p1))
+	
+	return dist
 	
 def houghLines(img):
 	#img = cv2.imread(name)
@@ -497,51 +421,6 @@ def getIntersection(line1, line2):
 
 	return x, y
 
-def createLineMap(lines):
-	map = defaultdict(list)
-	
-	for x1,y1,x2,y2 in lines[0]:
-		line = LineSegment(Point(x1,y1), Point(x2, y2))
-		map[line.getAngle()].append(line)
-		
-	return map
-	
-def getSquares(angleToLineMap):
-	
-	#lineMap = {};
-	for angle, line in angleToLineMap:
-		#if(lineMap[line] == None):
-		
-		angle = line.getAngle()
-		if(angle >= 90):
-			targetAngle = angle - 90
-		else:
-			targetAngle = angle + 90
-			
-		for index in range(targetAngle-angleRange, targetAngle+angleRange):
-			lines = angleToLineMap[index]
-			
-			if(lines != None):
-			
-				for lineCandidate in lines:
-					#if(lineMap[line] == None):
-					dist1 = min(line.point1.getDistance(lineCandidate.point1), line.point1.getDistance(lineCandidate.point2))
-					dist2 = min(line.point2.getDistance(lineCandidate.point1), line.point2.getDistance(lineCandidate.point2))
-					
-					if(dist1 < dist2):
-						line.setNeighbor1(lineCandidate)
-					else:
-						line.setNeighbor2(lineCandidate)
-						
-		#lineMap[line.neighbor1] = line.neighbor1
-		#lineMap[line.neighbor2] = line.neighbor2
-		
-		#set line with two neighbors into square
-		square = Square(line, targetAngle)
-			
-	#iterate over map angle by angle
-	#check for any lines at angles 90 degrees +/- 5 degrees in map
-	#only take 2 lines that are closest to the line that are within degrees
 
 def area(square):
 	width = abs(square[1][0]  - square[0][0])
@@ -596,6 +475,9 @@ def isolateBoardSquares(squares):
 				
 		index += 1
 		
+	if(biggest == None):
+		return None, None
+		
 	del squares[biggest[2]]
 	print('biggest')
 	print(biggest[0], biggest[1], biggest[2])
@@ -632,29 +514,7 @@ def isolateBoardSquares(squares):
 
 if __name__ == '__main__':
 	img = 'kinect_image.png'
-	#houghLines(img)
-	lines = houghLinesProb(img)
-	#sobel(img)
-	#print(checkIntersection([[1, 1], [1, 2]], [[0, 2], [1, 2]]))
-	#find fits
-	
-	image = cv2.imread(img)
-	#squares = find_squares(image)
-	#cv2.drawContours(image, squares, -1, (0, 255, 0), 3)
-	#cv2.imwrite('squares.jpg', image)
-	
-	#want to get slopes or angles, make sure angle of lines are at about 90
-	#degress +- 5 degrees
-	line1 = LineSegment(Point(1,1), Point(1,2))
-	line2 = LineSegment(Point(0,2), Point(1,2))
-	
-	print(getIntersection(line1, line2))
-	print(line1.getAngle(), line2.getAngle())
+	#img = 'picture.jpg'
+	lines = detectBoard(img)
 
-	#angleToLineMap = createLineMap(lines)
-	#print angleToLineMap
-
-	#find intersection
-	#x_intersect, y_intersect = find_intersect(func_A, func_B)
-	#print(x_intersect, y_intersect)
 	
