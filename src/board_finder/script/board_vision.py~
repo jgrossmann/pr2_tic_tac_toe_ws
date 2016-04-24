@@ -193,21 +193,10 @@ def find_squares(img):
 
 
 
-
-def detectBoard(img, name=None):
+def detectSquares(edges):
 	squares = []
-	if(name != None):
-		img = cv2.imread(name)
-	#img = sobel(name)
-	gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-	#cv2.imwrite('sobel.jpg', img)
-	edges = cv2.Canny(gray,50,150,apertureSize = 3)
-	cv2.imwrite('cannylines.jpg', edges)
-	 
 	contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
-	#print hierarchy
 	
-	#make this a separate function
 	for cnt in contours:
 		cnt_len = cv2.arcLength(cnt, True)
 		cnt = cv2.approxPolyDP(cnt, 0.02*cnt_len, True)
@@ -216,8 +205,26 @@ def detectBoard(img, name=None):
 			max_cos = np.max([angle_cos( cnt[i], cnt[(i+1) % 4], cnt[(i+2) % 4] ) for i in xrange(4)])
 			if max_cos < 0.25:
 				squares.append(cnt)
+				
+	return squares
+
+
+
+def detectBoard(img, name=None):
+
+	if(name != None):
+		img = cv2.imread(name)
+	#img = sobel(name)
+	gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+	#cv2.imwrite('sobel.jpg', img)
+	edges = cv2.Canny(gray,50,150,apertureSize = 3)
+	cv2.imwrite('cannylines.jpg', edges)
+	 
+	squares = detectSquares(edges)
                       
-                        
+	if(squares == None):
+		print('did not find any squares')
+		return None                
 	#cv2.drawContours(img, squares, -1, (0, 255, 0), 1)
 	
 
@@ -269,8 +276,6 @@ def detectBoard(img, name=None):
 	xLocations = detectXs(board, lines, maxRad, img)
 	
 	board.setXLocations(xLocations)
-	
-	print(board.boardState)
 
 	for x1,y1,x2,y2 in lines[0]:
 		cv2.line(img,(x1,y1),(x2,y2),(0,255,0),2)
@@ -278,7 +283,7 @@ def detectBoard(img, name=None):
 
 	cv2.imwrite('houghlines2.jpg',img)
 	
-	return lines
+	return board.squareCenters, board.boardState
 
 	
 
@@ -515,6 +520,7 @@ def isolateBoardSquares(squares):
 if __name__ == '__main__':
 	img = 'kinect_image.png'
 	#img = 'picture.jpg'
-	lines = detectBoard(img)
+	centers, state = detectBoard(None, img)
+	print state
 
 	
