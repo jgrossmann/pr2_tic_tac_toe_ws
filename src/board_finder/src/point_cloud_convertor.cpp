@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
 						"/head_mount_kinect/depth_registered/points",
 						2,
 						callback);
-	//publisher = nh.advertise<std_msgs::String>("/kinect_image/xyz_and_rgb", 1);
+	publisher = nh.advertise<std_msgs::String>("board_finder/Kinect_Image", 1);
  	//ros::Rate loop_rate(5);
 
 	ros::spin();

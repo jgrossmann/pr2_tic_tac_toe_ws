@@ -19,6 +19,7 @@ void move_arm(double x, double y, double z, double w, char arm)
 
   sleep(3.0);
   l_arm_move_group.stop();
+  spinner.
   sleep(2.0);
   }
 

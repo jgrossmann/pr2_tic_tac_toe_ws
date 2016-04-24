@@ -3,6 +3,6 @@ prefix=/home/jg3538/pr2_tic_tac_toe_ws/devel
 Name: board_finder
 Description: Description of board_finder
 Version: 0.0.0
-Cflags: 
+Cflags: -I/home/jg3538/pr2_tic_tac_toe_ws/devel/include
 Libs: -L/home/jg3538/pr2_tic_tac_toe_ws/devel/lib 
-Requires: 
+Requires: message_runtime
