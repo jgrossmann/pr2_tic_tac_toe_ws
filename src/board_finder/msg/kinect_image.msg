@@ -1,5 +1,6 @@
 Header header
 int32 width
 int32 height
-uint8[] xyz
-uint8[] rgb
+uint16[] xyz
+sensor_msgs/Image rgb
+

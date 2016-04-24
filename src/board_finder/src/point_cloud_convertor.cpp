@@ -54,6 +54,13 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 		    }
 		}
 	}
+	
+	cv_bridge::CvImage outputImage;
+	outputImage.header = msg->header;
+	outputImage.encoding = sensor_msgs::image_encodings::RGB8
+	outputImage.image = imageFrame;
+	
+	//publish(outputImage.toImageMsg());
 
     vector<int> compression_params;
     compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
