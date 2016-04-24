@@ -169,7 +169,7 @@ def detectXs(board, lines, maxRad, img):
 	centers = board.getOpenCenters()
 	centerMap = defaultdict(list)
 	
-	proximity = maxRad * .65
+	proximity = maxRad * .5
 	
 	xLocations = np.zeros(9)
 	print(proximity)
@@ -178,7 +178,7 @@ def detectXs(board, lines, maxRad, img):
 	for x1,y1,x2,y2 in lines[0]:
 		p1 = Point(x1, y1)
 		p2 = Point(x2, y2)
-		
+	
 		#print(p1.x, p1.y, p2.x, p2.y)
 		for center, index in centers:
 			
@@ -191,7 +191,7 @@ def detectXs(board, lines, maxRad, img):
 	minDist = 1
 	
 	for center, lines in centerMap.iteritems():
-		if(center == 8):
+		if(center == 7):
 			for line in lines:
 				cv2.line(img,(line.point1.x,line.point1.y),(line.point2.x, line.point2.y),(255, 0, 0),2)
 	
@@ -223,7 +223,8 @@ def detectXs(board, lines, maxRad, img):
 		if(count == 3):
 			xLocations[center] = 2
 			
-	
+	print('xlocations')
+	print xLocations
 	return xLocations
 			
 				
@@ -397,7 +398,7 @@ def isolateBoardSquares(squares):
 
 if __name__ == '__main__':
 	img = 'kinect_image.png'
-	img = 'image.jpg'
+	#img = 'image.jpg'
 	centers, state = detectBoard(None, img)
 	print state
 
