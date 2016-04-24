@@ -1,5 +1,9 @@
 import numpy as np
-from board_vision_lib import *
+#from board_vision import *
+from board_vision import *
+from Point import *
+from LineSegment import *
+from Cluster import *
 
 class Board():
 	def __init__(self, outersquare, innersquares):
@@ -131,3 +135,87 @@ class Board():
 			index += 1
 		return centers
 			
+
+
+def createClusters(line1, line2, line3, line4):
+	clusters = []
+	
+	ratio = 0.125
+	dist1 = line1.point1.getDistance(line1.point2)
+	dist2 = line3.point1.getDistance(line3.point2)
+	distRatio = float(dist1 / dist2)
+	
+	height = line1.point1.getDistance(line4.point1)
+	
+	print('cluster 1')
+	x = line1.point1.x
+	y = line1.point1.y
+	x += (line4.point1.x - line1.point1.x) * ratio
+	x += (line2.point1.x - line1.point1.x) * ratio
+	y += (line4.point1.y - line1.point1.y) * ratio
+	y += (line2.point1.y - line1.point1.y) * ratio
+	clusters.append(Cluster(Point(x, y)))
+	print(x, y)
+	
+	print('cluster 2')
+	x = int(np.mean([line1.point2.x, line1.point1.x]))
+	y = int(np.mean([line1.point2.y, line1.point1.y]))
+	x += (line4.point1.x - line1.point1.x) * ratio
+	y += (line4.point1.y - line1.point1.y) * ratio
+	clusters.append(Cluster(Point(x,y)))
+	print x, y
+	
+	x = line1.point2.x
+	y = line1.point2.y
+	x += (line2.point2.x - line1.point2.x) * ratio
+	x += (line1.point1.x - line1.point2.x) * ratio 
+	y += (line2.point2.y - line1.point2.y) * ratio
+	y += (line1.point1.y - line1.point2.y) * ratio 
+	clusters.append(Cluster(Point(x,y)))
+	
+	x = int(np.mean([line4.point2.x, line4.point1.x]))
+	y = int(np.mean([line4.point2.y, line4.point1.y]))
+	x += (line2.point2.x - line4.point1.x) * ratio
+	y += (line2.point2.y - line4.point1.y) * ratio
+	y -= ((height/2.0) * (1 - distRatio))
+	clusters.append(Cluster(Point(x,y)))
+	
+	x = np.mean([line1.point1.x, line2.point1.x, line3.point1.x, line4.point1.x])
+	y = np.mean([line1.point1.y, line2.point1.y, line3.point1.y, line4.point1.y])
+	y -= ((height/2.0) * (1 - distRatio))
+	clusters.append(Cluster(Point(x,y)))
+	
+	x = int(np.mean([line2.point2.x, line2.point1.x]))
+	y = int(np.mean([line2.point2.y, line2.point1.y]))
+	x += (line4.point1.x - line2.point2.x) * ratio
+	y += (line4.point1.y - line2.point2.y) * ratio
+	y -= ((height/2.0) * (1 - distRatio))
+	clusters.append(Cluster(Point(x,y)))
+	
+	x = line4.point1.x
+	y = line4.point1.y
+	x += (line1.point1.x - line4.point1.x) * ratio
+	x += (line2.point2.x - line4.point1.x) * ratio
+	y += (line1.point1.y - line4.point1.y) * ratio
+	y += (line2.point2.y - line4.point1.y) * ratio
+	y -= ((height/2.0) * (1 - distRatio))
+	clusters.append(Cluster(Point(x,y)))
+	
+	x = int(np.mean([line3.point2.x, line3.point1.x]))
+	y = int(np.mean([line3.point2.y, line3.point1.y]))
+	x += (line1.point1.x - line3.point2.x) * ratio
+	y += (line1.point1.y - line3.point2.y) * ratio
+	y -= ((height/2.0) * (1 - distRatio))
+	clusters.append(Cluster(Point(x,y)))
+	
+	x = line2.point2.x
+	y = line2.point2.y
+	x += (line1.point2.x - line2.point2.x) * ratio
+	x += (line4.point1.x - line2.point2.x) * ratio
+	y += (line1.point2.y - line2.point2.y) * ratio
+	y += (line4.point1.y - line2.point2.y) * ratio
+	y -= ((height/2.0) * (1 - distRatio))
+	clusters.append(Cluster(Point(x,y)))
+	
+	return clusters			
+	

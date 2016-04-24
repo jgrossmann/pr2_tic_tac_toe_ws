@@ -4,7 +4,7 @@
       <mass value="0.4" />
       <!-- center of mass (com) is defined w.r.t. link local coordinate system -->
       <origin xyz="0 0 0" /> 
-      <inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="1.0"  iyz="0.0"  izz="1.0" />
+      <inertia  ixx="51.123825" ixy="0.0"  ixz="0.0"  iyy="51.123817"  iyz="0.0"  izz="99.618065" />
     </inertial>
       <max_vel>0.1</max_vel>
       <min_depth>0.001</min_depth>
@@ -14,19 +14,19 @@
       <!-- visual origin is defined w.r.t. link local coordinate system -->
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://system_launch/models/mesh/X_model.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://system_launch/models/mesh/X_model.dae" scale="0.01 0.01 0.01" />
       </geometry>
     </visual>
     <collision>
       <!-- collision origin is defined w.r.t. link local coordinate system -->
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://system_launch/models/mesh/X_model.dae" scale="0.001 0.001 0.001" />
+        <mesh filename="package://system_launch/models/mesh/X_model.dae" scale="0.01 0.01 0.01" />
       </geometry>
     </collision>
   </link>
   <gazebo reference="X">
-    <material>Gazebo/White</material>
+    <material>Gazebo/Black</material>
     <turnGravityOff>false</turnGravityOff>
     <kp>100000000.0</kp>
     <kd>1.0</kd>

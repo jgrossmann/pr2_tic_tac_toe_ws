@@ -7,140 +7,13 @@ from matplotlib.pyplot import *
 from collections import defaultdict
 from Board import *
 from LineSegment import *
-
+from Point import *
+from Cluster import *
 
 angleRange = 5				
-		
-class Point():
+			
 	
-	def __init__(self, x, y):
-		self.x = int(x)
-		self.y = int(y)
-	
-	def getDistance(self, point2):
-		xdif = point2.x - self.x
-		ydif = point2.y - self.y
-		return math.hypot(ydif, xdif)
-		
-	def __eq__(self, other):
-		return (self.x == other.x and self.y == other.y)
-		
-	def inList(self, list):
-		for point in list:
-			if point == self:
-				return True
-		return False
-		
-	
-		
-	
-def createClusters(line1, line2, line3, line4):
-	clusters = []
-	
-	ratio = 0.125
-	dist1 = line1.point1.getDistance(line1.point2)
-	dist2 = line3.point1.getDistance(line3.point2)
-	distRatio = float(dist1 / dist2)
-	
-	height = line1.point1.getDistance(line4.point1)
-	
-	print('cluster 1')
-	x = line1.point1.x
-	y = line1.point1.y
-	x += (line4.point1.x - line1.point1.x) * ratio
-	x += (line2.point1.x - line1.point1.x) * ratio
-	y += (line4.point1.y - line1.point1.y) * ratio
-	y += (line2.point1.y - line1.point1.y) * ratio
-	clusters.append(Cluster(Point(x, y)))
-	print(x, y)
-	
-	print('cluster 2')
-	x = int(np.mean([line1.point2.x, line1.point1.x]))
-	y = int(np.mean([line1.point2.y, line1.point1.y]))
-	x += (line4.point1.x - line1.point1.x) * ratio
-	y += (line4.point1.y - line1.point1.y) * ratio
-	clusters.append(Cluster(Point(x,y)))
-	print x, y
-	
-	x = line1.point2.x
-	y = line1.point2.y
-	x += (line2.point2.x - line1.point2.x) * ratio
-	x += (line1.point1.x - line1.point2.x) * ratio 
-	y += (line2.point2.y - line1.point2.y) * ratio
-	y += (line1.point1.y - line1.point2.y) * ratio 
-	clusters.append(Cluster(Point(x,y)))
-	
-	x = int(np.mean([line4.point2.x, line4.point1.x]))
-	y = int(np.mean([line4.point2.y, line4.point1.y]))
-	x += (line2.point2.x - line4.point1.x) * ratio
-	y += (line2.point2.y - line4.point1.y) * ratio
-	y -= ((height/2.0) * (1 - distRatio))
-	clusters.append(Cluster(Point(x,y)))
-	
-	x = np.mean([line1.point1.x, line2.point1.x, line3.point1.x, line4.point1.x])
-	y = np.mean([line1.point1.y, line2.point1.y, line3.point1.y, line4.point1.y])
-	y -= ((height/2.0) * (1 - distRatio))
-	clusters.append(Cluster(Point(x,y)))
-	
-	x = int(np.mean([line2.point2.x, line2.point1.x]))
-	y = int(np.mean([line2.point2.y, line2.point1.y]))
-	x += (line4.point1.x - line2.point2.x) * ratio
-	y += (line4.point1.y - line2.point2.y) * ratio
-	y -= ((height/2.0) * (1 - distRatio))
-	clusters.append(Cluster(Point(x,y)))
-	
-	x = line4.point1.x
-	y = line4.point1.y
-	x += (line1.point1.x - line4.point1.x) * ratio
-	x += (line2.point2.x - line4.point1.x) * ratio
-	y += (line1.point1.y - line4.point1.y) * ratio
-	y += (line2.point2.y - line4.point1.y) * ratio
-	y -= ((height/2.0) * (1 - distRatio))
-	clusters.append(Cluster(Point(x,y)))
-	
-	x = int(np.mean([line3.point2.x, line3.point1.x]))
-	y = int(np.mean([line3.point2.y, line3.point1.y]))
-	x += (line1.point1.x - line3.point2.x) * ratio
-	y += (line1.point1.y - line3.point2.y) * ratio
-	y -= ((height/2.0) * (1 - distRatio))
-	clusters.append(Cluster(Point(x,y)))
-	
-	x = line2.point2.x
-	y = line2.point2.y
-	x += (line1.point2.x - line2.point2.x) * ratio
-	x += (line4.point1.x - line2.point2.x) * ratio
-	y += (line1.point2.y - line2.point2.y) * ratio
-	y += (line4.point1.y - line2.point2.y) * ratio
-	y -= ((height/2.0) * (1 - distRatio))
-	clusters.append(Cluster(Point(x,y)))
-	
-	return clusters		
-	
-	
-	
-class Cluster:
-	def __init__(self, center):
-		self.center = center
-		self.points = []
-		
-	def update(self):
-		xavg = 0
-		yavg = 0
-		for point in self.points:
-			xavg += point.x
-			yavg += point.y
-		
-		numPoints = len(self.points)
-		if(numPoints == 0):
-			self.center = Point(0, 0)
-		else :
-			xavg = int(xavg / len(self.points))
-			yavg = int(yavg / len(self.points))
-			self.center = Point(xavg, yavg)	
-		
-	def distance(self, point):
-		return self.center.getDistance(point)	
-	
+
 		
 
 def checkIntersection(a, b):
@@ -224,7 +97,7 @@ def detectBoard(img, name=None):
                       
 	if(squares == None):
 		print('did not find any squares')
-		return None                
+		return None, None               
 	#cv2.drawContours(img, squares, -1, (0, 255, 0), 1)
 	
 
@@ -235,7 +108,7 @@ def detectBoard(img, name=None):
 	
 	maxRad = 0
 	if(board.innerSquares == None):
-		return None
+		return None, None
 		
 	for square in board.innerSquares:
 		maxRad = int(max(maxRad, getLongestDimension(square)))
@@ -255,14 +128,18 @@ def detectBoard(img, name=None):
 	#try dilation if does not work well
 	circles = cv2.HoughCircles(edges, cv2.cv.CV_HOUGH_GRADIENT, 1, 20, param1=50, param2=40, minRadius=0, maxRadius=maxRad)
 	
-	circles = np.uint16(np.around(circles))
-	for i in circles[0,:]:
-		cv2.circle(img, (i[0], i[1]), i[2], (0, 255, 0), 2)
-		cv2.circle(img, (i[0], i[1]), 2, (0, 0, 255), 3)
+	if(circles == None):
+		print ("no circles found")
+	else:
+
+		circles = np.uint16(np.around(circles))
+		for i in circles[0,:]:
+			cv2.circle(img, (i[0], i[1]), i[2], (0, 255, 0), 2)
+			cv2.circle(img, (i[0], i[1]), 2, (0, 0, 255), 3)
 		
-	board.setCircleLocations(circles)
+		board.setCircleLocations(circles)
 	
-	cv2.imwrite('circles.jpg', img)
+		cv2.imwrite('circles.jpg', img)
 	
 	
 						
@@ -519,7 +396,7 @@ def isolateBoardSquares(squares):
 
 if __name__ == '__main__':
 	img = 'kinect_image.png'
-	#img = 'picture.jpg'
+	img = 'image.jpg'
 	centers, state = detectBoard(None, img)
 	print state
 

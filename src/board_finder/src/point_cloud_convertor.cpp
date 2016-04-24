@@ -3,10 +3,14 @@
 #include <pcl/point_types.h>
 #include <boost/foreach.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include "opencv2/highgui/highgui.hpp"
+#include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <sstream>
+#include "board_finder/Kinect_Image.h"
+#include <cv_bridge/cv_bridge.h>
+#include <image_transport/image_transport.h>
+#include <sensor_msgs/Image.h>
 
 using namespace std;
 
@@ -55,12 +59,17 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 		}
 	}
 	
-	cv_bridge::CvImage outputImage;
-	outputImage.header = msg->header;
-	outputImage.encoding = sensor_msgs::image_encodings::RGB8
-	outputImage.image = imageFrame;
+	cv_bridge::CvImage bridge = cv_bridge::CvImage(msg->header, "rgb8", imageFrame);
+	sensor_msgs::ImagePtr outputImage = bridge.toImageMsg();
+
+	board_finder::Kinect_Image newMessage;
+	newMessage.header = msg->header;
+	newMessage.rgb = *outputImage;
+	newMessage.width = cloud->width;
+	newMessage.height = cloud->height;
 	
-	//publish(outputImage.toImageMsg());
+	
+	publisher.publish(newMessage);
 
     vector<int> compression_params;
     compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
@@ -81,8 +90,8 @@ int main(int argc, char** argv) {
 						"/head_mount_kinect/depth_registered/points",
 						2,
 						callback);
-	publisher = nh.advertise<std_msgs::String>("board_finder/Kinect_Image", 1);
- 	//ros::Rate loop_rate(5);
+	publisher = nh.advertise<board_finder::Kinect_Image>("board_finder/Kinect_Image", 1);
+ 	ros::Rate loop_rate(2);
 
 	ros::spin();
 }

@@ -5,6 +5,8 @@ import cv2
 import numpy as np
 from cv_bridge import CvBridge, CvBridgeError
 import board_vision
+from board_finder.msg import Kinect_Image
+
 
 def getWorldCoordinates(centers, coordinates):
 	pass
@@ -30,7 +32,7 @@ def callback(data):
 		
 	centers, state = board_vision.detectBoard(img)
 	
-	if(centers == None || state == None):
+	if(centers == None or state == None):
 		print('board could not be detected')
 		return
 	
@@ -42,7 +44,7 @@ def callback(data):
 
 def listener():
 	rospy.init_node('board_finder')
-	rospy.Subscriber("/kinect_image", msg, callback)
+	rospy.Subscriber("board_finder/Kinect_Image", Kinect_Image, callback)
 	print("Starting listener")
 	rospy.spin()
 	

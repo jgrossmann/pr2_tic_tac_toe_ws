@@ -13,7 +13,7 @@ int main(int argc, char **argv)
   move_arm(.30, .5, 1, 1,'l'); //write instructions to left arm
 
   //int b = move_arm(.30, -.5, 1, 1,'r'); //write instructions to left arm
-  //move_arm(.30, -.5, 1, 1,'r'); //write instructions to left arm
+  move_arm(.30, -.5, 1, 1,'r'); //write instructions to left arm
 
   //std::cout << a << std::endl;
   std::cout << "done" << std::endl;

@@ -10,10 +10,11 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   message_generation
+  PCL REQUIRED
+  OpenCV REQUIRED
+  cv_bridge
 )
 
-find_package(PCL REQUIRED)
-find_package(OpenCV REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -124,6 +125,8 @@ catkin_package(
 include_directories(
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
+  ${script}
 )
 
 link_directories(${PCL_LIBRARY_DIRS})

@@ -3,6 +3,8 @@
  
 void move_arm(double x, double y, double z, double w, char arm)
 {
+  ros::AsyncSpinner spinner(2);
+  spinner.start();
   if (arm == 'l') {
   moveit::planning_interface::MoveGroup l_arm_move_group("left_arm");
   geometry_msgs::Pose goal_end_effector_pose;
@@ -15,11 +17,9 @@ void move_arm(double x, double y, double z, double w, char arm)
   l_arm_move_group.setPoseTarget(goal_end_effector_pose);
 
   // plan the motion and then move the group to the sampled target 
-  l_arm_move_group.asyncMove();
-
-  sleep(3.0);
-  l_arm_move_group.stop();
-  sleep(2.0);
+  l_arm_move_group.move();
+  ros::Duration(3).sleep();
+  spinner.stop();
   }
 
   else if (arm == 'r') {
@@ -32,8 +32,12 @@ void move_arm(double x, double y, double z, double w, char arm)
   //l_arm_move_group.setRandomTarget();  
   r_arm_move_group.setPoseTarget(goal_end_effector_pose);
   // plan the motion and then move the group to the sampled target 
-  r_arm_move_group.asyncMove();
+  r_arm_move_group.move();
+  ros::Duration(3).sleep();
+  spinner.stop();
   }
+
+  spinner.stop();
 
  
 	

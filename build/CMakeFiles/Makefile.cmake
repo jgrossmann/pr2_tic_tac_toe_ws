@@ -102,6 +102,8 @@ SET(CMAKE_MAKEFILE_DEPENDS
   "/opt/ros/indigo/share/cmake_modules/cmake/cmake_modulesConfig.cmake"
   "/opt/ros/indigo/share/cpp_common/cmake/cpp_commonConfig-version.cmake"
   "/opt/ros/indigo/share/cpp_common/cmake/cpp_commonConfig.cmake"
+  "/opt/ros/indigo/share/cv_bridge/cmake/cv_bridgeConfig-version.cmake"
+  "/opt/ros/indigo/share/cv_bridge/cmake/cv_bridgeConfig.cmake"
   "/opt/ros/indigo/share/eigen_conversions/cmake/eigen_conversionsConfig-version.cmake"
   "/opt/ros/indigo/share/eigen_conversions/cmake/eigen_conversionsConfig.cmake"
   "/opt/ros/indigo/share/eigen_stl_containers/cmake/eigen_stl_containersConfig-version.cmake"
