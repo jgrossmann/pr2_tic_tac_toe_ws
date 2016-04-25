@@ -69,11 +69,12 @@ def find_squares(img):
 def detectSquares(edges):
 	squares = []
 	contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
-	
+	print('num contours '+str(len(contours)))
 	for cnt in contours:
+		print cnt
 		cnt_len = cv2.arcLength(cnt, True)
 		cnt = cv2.approxPolyDP(cnt, 0.02*cnt_len, True)
-		if len(cnt) == 4 and cv2.contourArea(cnt) > 20 and cv2.isContourConvex(cnt):
+		if len(cnt) == 4 and cv2.contourArea(cnt) > 15 and cv2.isContourConvex(cnt):
 			cnt = cnt.reshape(-1, 2)
 			max_cos = np.max([angle_cos( cnt[i], cnt[(i+1) % 4], cnt[(i+2) % 4] ) for i in xrange(4)])
 			if max_cos < 0.25:
@@ -90,15 +91,20 @@ def detectBoard(img, name=None):
 	#img = sobel(name)
 	gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	#cv2.imwrite('sobel.jpg', img)
-	edges = cv2.Canny(gray,50,150,apertureSize = 3)
+	edges = cv2.Canny(gray,20,120,apertureSize = 3)
 	cv2.imwrite('cannylines.jpg', edges)
 	 
 	squares = detectSquares(edges)
                       
 	if(squares == None):
 		print('did not find any squares')
-		return None, None               
-	#cv2.drawContours(img, squares, -1, (0, 255, 0), 1)
+		return None, None     
+ 
+	kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 9))
+	#closed = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel)
+	contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)         
+	cv2.drawContours(img, contours, -1, (0, 255, 0), 2)
+	cv2.imwrite('squares.jpg', img)
 	
 
 	outer, inner = isolateBoardSquares(squares)
@@ -398,7 +404,7 @@ def isolateBoardSquares(squares):
 
 if __name__ == '__main__':
 	img = 'kinect_image.png'
-	#img = 'image.jpg'
+	img = 'image.jpg'
 	centers, state = detectBoard(None, img)
 	print state
 

@@ -34,7 +34,8 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 	cloud->height = 480;
 	cloud->points.resize(cloud->width * cloud->height * 3);
 
-    short xyz [cloud->width * cloud->height] = {}
+	//short *xyz = new short[cloud->width * cloud->height * 3];
+    std::vector<short unsigned int> xyz(cloud->width * cloud->height * 3);
     
 	cv::Mat imageFrame;
 	if (cloud->isOrganized())
@@ -52,9 +53,9 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 		            pcl::PointXYZRGB point = cloud->at(w, h);
 					
 					index = h * w * 3;
-					xyz[index] = point.x
-					xyz[index+1] = point.y
-					xyz[index+2] = point.z	
+					xyz[index] = point.x;
+					xyz[index+1] = point.y;
+					xyz[index+2] = point.z;	
 						
 		            Eigen::Vector3i rgb = point.getRGBVector3i();
 
@@ -75,10 +76,12 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 	newMessage.width = cloud->width;
 	newMessage.height = cloud->height;
 	
-	newMessage.xyz = xyz
+	newMessage.xyz = xyz;
 	
 	
 	publisher.publish(newMessage);
+
+	
 
     vector<int> compression_params;
     compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);

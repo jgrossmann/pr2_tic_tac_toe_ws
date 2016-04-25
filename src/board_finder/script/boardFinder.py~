@@ -6,8 +6,9 @@ import numpy as np
 from cv_bridge import CvBridge, CvBridgeError
 import board_vision
 from board_finder.msg import Kinect_Image
-from board_finder/msg import TicTacToe
+from board_finder.msg import TicTacToe
 
+publisher = None
 
 def getWorldCoordinates(centers, coordinates):
 	worldCoordinates = []
@@ -42,15 +43,23 @@ def callback(data):
 	print state
 	centers = getWorldCoordinates(centers, data.xyz)
 	
+	result = TicTacToe()
+	result.header = data.header
+	result.centers = centers
+	result.state = state
 	
-	#publish(message)
+	publisher.publish(message)
 	
 	
 
 def listener():
 	rospy.init_node('board_finder')
+	global publisher
+	publisher = rospy.Publisher('board_finder/TicTacToe', TicTacToe, queue_size=1)
 	rospy.Subscriber("board_finder/Kinect_Image", Kinect_Image, callback)
 	print("Starting listener")
+	
+	rospy.Rate(2)
 	rospy.spin()
 	
 if __name__ == '__main__':

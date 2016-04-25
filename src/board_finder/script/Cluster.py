@@ -4,6 +4,7 @@ class Cluster:
 	def __init__(self, center):
 		self.center = center
 		self.points = []
+		self.centerFound = False
 		
 	def update(self):
 		xavg = 0
@@ -14,11 +15,12 @@ class Cluster:
 		
 		numPoints = len(self.points)
 		if(numPoints == 0):
-			self.center = Point(0, 0)
+			return
 		else :
 			xavg = int(xavg / len(self.points))
 			yavg = int(yavg / len(self.points))
 			self.center = Point(xavg, yavg)	
+			self.centerFound = True
 		
 	def distance(self, point):
 		return self.center.getDistance(point)

@@ -48,16 +48,18 @@ def callback(data):
 	result.centers = centers
 	result.state = state
 	
-	publisher.publish(message)
+	publisher.publish(result)
 	
 	
 
 def listener():
 	rospy.init_node('board_finder')
+	global publisher
+	publisher = rospy.Publisher('board_finder/TicTacToe', TicTacToe, queue_size=1)
 	rospy.Subscriber("board_finder/Kinect_Image", Kinect_Image, callback)
 	print("Starting listener")
-	publisher = rospy.Publisher('board_finder/TicTacToe', TicTacToe, queue_size=1)
-	rospy.rate(2)
+	
+	rospy.Rate(2)
 	rospy.spin()
 	
 if __name__ == '__main__':

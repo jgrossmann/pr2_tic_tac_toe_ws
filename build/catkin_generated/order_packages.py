@@ -2,4 +2,4 @@
 source_root_dir = "/home/jg3538/pr2_tic_tac_toe_ws/src"
 whitelisted_packages = "".split(';') if "" != "" else []
 blacklisted_packages = "".split(';') if "" != "" else []
-underlay_workspaces = "/home/jg3538/pr2_tic_tac_toe_ws/devel;/opt/ros/indigo".split(';') if "/home/jg3538/pr2_tic_tac_toe_ws/devel;/opt/ros/indigo" != "" else []
+underlay_workspaces = "/opt/ros/indigo".split(';') if "/opt/ros/indigo" != "" else []

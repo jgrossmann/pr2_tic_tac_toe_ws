@@ -106,6 +106,7 @@ class Board():
 			Point(self.outline[0][0], self.outline[0][1]))
 		
 		clusters = createClusters(line1, line2, line3, line4)
+		self.clusters = clusters
 		index = 0
 		for cluster in clusters:
 			print(index, cluster.center.x, cluster.center.y)
