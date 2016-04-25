@@ -53,6 +53,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   Kinect_Image.msg
+  TicTacToe.msg
 #   Message1.msg
 #   Message2.msg
 )

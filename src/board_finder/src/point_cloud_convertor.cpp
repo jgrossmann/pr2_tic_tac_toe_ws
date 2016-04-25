@@ -32,9 +32,9 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 	
     cloud->width = 640;
 	cloud->height = 480;
-	cloud->points.resize(cloud->width * cloud->height);
+	cloud->points.resize(cloud->width * cloud->height * 3);
 
-    
+    short xyz [cloud->width * cloud->height] = {}
     
 	cv::Mat imageFrame;
 	if (cloud->isOrganized())
@@ -43,12 +43,19 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 		imageFrame = cv::Mat(cloud->height, cloud->width, CV_8UC3); 
 		{
 
+			int index;
+			
 		    for (int h=0; h<imageFrame.rows; h++) 
 		    {
 		        for (int w=0; w<imageFrame.cols; w++) 
 		        {
 		            pcl::PointXYZRGB point = cloud->at(w, h);
-
+					
+					index = h * w * 3;
+					xyz[index] = point.x
+					xyz[index+1] = point.y
+					xyz[index+2] = point.z	
+						
 		            Eigen::Vector3i rgb = point.getRGBVector3i();
 
 		            imageFrame.at<cv::Vec3b>(h,w)[0] = rgb[2];
@@ -67,6 +74,8 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 	newMessage.rgb = *outputImage;
 	newMessage.width = cloud->width;
 	newMessage.height = cloud->height;
+	
+	newMessage.xyz = xyz
 	
 	
 	publisher.publish(newMessage);

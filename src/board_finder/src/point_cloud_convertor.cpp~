@@ -32,9 +32,9 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 	
     cloud->width = 640;
 	cloud->height = 480;
-	cloud->points.resize(cloud->width * cloud->height);
+	cloud->points.resize(cloud->width * cloud->height * 3);
 
-    
+    int xyz [cloud->width * cloud->height] = {}
     
 	cv::Mat imageFrame;
 	if (cloud->isOrganized())
@@ -43,12 +43,19 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 		imageFrame = cv::Mat(cloud->height, cloud->width, CV_8UC3); 
 		{
 
+			int index;
+			
 		    for (int h=0; h<imageFrame.rows; h++) 
 		    {
 		        for (int w=0; w<imageFrame.cols; w++) 
 		        {
 		            pcl::PointXYZRGB point = cloud->at(w, h);
-
+					
+					index = h * w * 3;
+					xyz[index] = point.x
+					xyz[index+1] = point.y
+					xyz[index+2] = point.z	
+						
 		            Eigen::Vector3i rgb = point.getRGBVector3i();
 
 		            imageFrame.at<cv::Vec3b>(h,w)[0] = rgb[2];
@@ -59,19 +66,16 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 		}
 	}
 	
-	sensor_msgs::ImagePtr i;
 	cv_bridge::CvImage bridge = cv_bridge::CvImage(msg->header, "rgb8", imageFrame);
-	bridge.toImageMsg(*i);
 	sensor_msgs::ImagePtr outputImage = bridge.toImageMsg();
-	//cv_bridge::CvImage outputImage;
-	//outputImage.encoding = sensor_msgs::image_encodings::RGB8;
-	//outputImage.image = imageFrame;
 
 	board_finder::Kinect_Image newMessage;
 	newMessage.header = msg->header;
-	//newMessage.rgb = *outputImage;
+	newMessage.rgb = *outputImage;
 	newMessage.width = cloud->width;
 	newMessage.height = cloud->height;
+	
+	newMessage.xyz = xyz
 	
 	
 	publisher.publish(newMessage);
