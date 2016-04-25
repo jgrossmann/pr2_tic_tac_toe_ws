@@ -74,6 +74,11 @@ public:
   }
 };
 
+  vod moveHeadDefaultPosition()
+  {
+    lookAt("base_link", 1.0, 0.0, .05);
+  }
+
 int main(int argc, char** argv)
 {
   //init the ROS node

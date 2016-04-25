@@ -64,14 +64,14 @@ class LineSegment():
 		if(dist < self.neighbor2[1]):
 			self.neighbor2 = (line, dist)
 		
-	#def getAngleDif(self, line2):
-	#	angle1 = self.getAngle()
-	#	angle2 = line2.getAngle()
-	#	
-	#	dif = angle2 - angle1
-	#	if(dif > math.pi):
-	#		dif =  -(dif - math.pi)
-	#	elif(dif < -math.pi):
-	#		dif = -(dif + math.pi)
+	def getAngleDif(self, line2):
+		angle1 = self.getAngle()
+		angle2 = line2.getAngle()
+		
+		dif = angle2 - angle1
+		if(dif > 180):
+			dif =  (dif - 180)
+		elif(dif < 0):
+			dif = (dif + 180)
 			
-	#	return dif
+		return dif

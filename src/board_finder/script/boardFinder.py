@@ -7,8 +7,10 @@ from cv_bridge import CvBridge, CvBridgeError
 import board_vision
 from board_finder.msg import Kinect_Image
 from board_finder.msg import TicTacToe
+from Board import *
 
 publisher = None
+lastBoard = None
 
 def getWorldCoordinates(centers, coordinates):
 	worldCoordinates = []
@@ -20,6 +22,8 @@ def getWorldCoordinates(centers, coordinates):
 
 def callback(data):
 	print('callback')
+	global lastBoard
+
 	print(rospy.get_caller_id() + " "+ str(data.header.stamp))
 	bridge = CvBridge()
 	
@@ -35,18 +39,35 @@ def callback(data):
 	except:
 		print("Error writing image")
 		
-	centers, state = board_vision.detectBoard(img)
-	
-	if(centers == None or state == None):
+	board = board_vision.detectBoard(img)
+
+	if(board == None):
 		print('board could not be detected')
 		return
-	print state
+
+	if(lastBoard == None):
+		lastBoard = board
+		print('board moved, not computing')
+		return
+
+	if(lastBoard.outline != board.outline):
+		lastBoard = board
+		print('board moved, not computing')
+		return
+
+	lastBoard = board
+
+	centers = []	
+	for cluster in board.squareCenters:
+		centers.append(cluster.center)
+	
+	print board.state
 	centers = getWorldCoordinates(centers, data.xyz)
 	
 	result = TicTacToe()
 	result.header = data.header
 	result.centers = centers
-	result.state = state
+	result.state = board.state
 	
 	publisher.publish(result)
 	

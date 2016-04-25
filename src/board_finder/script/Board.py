@@ -135,7 +135,7 @@ class Board():
 		orderedCenters = []
 		for cluster in clusters:
 			cluster.update()
-			orderedCenters.append(cluster.center)
+			orderedCenters.append(cluster)
 			
 
 		return orderedCenters
@@ -149,8 +149,8 @@ class Board():
 			
 			minDist = None
 			index = 0
-			for center in openCenters:
-				dist = p.getDistance(center)
+			for cluster in openCenters:
+				dist = p.getDistance(cluster.center)
 				if(minDist == None):
 					minDist = (dist, index)
 				else:
@@ -158,6 +158,9 @@ class Board():
 						minDist = (dist, index)
 				index += 1
 				
+			if(openCenters[minDist[1]].centerFound == False):
+				openCenters[minDist[1]].center = p
+
 			self.boardState[minDist[1]] = 1
 		print('boardstate')
 		print self.boardState

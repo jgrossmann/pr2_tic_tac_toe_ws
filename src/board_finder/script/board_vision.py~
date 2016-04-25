@@ -68,6 +68,8 @@ def find_squares(img):
 
 def detectSquares(edges):
 	squares = []
+	kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))
+	#closed = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel)
 	contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
 	print('num contours '+str(len(contours)))
 	for cnt in contours:
@@ -91,23 +93,27 @@ def detectBoard(img, name=None):
 	#img = sobel(name)
 	gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	#cv2.imwrite('sobel.jpg', img)
-	edges = cv2.Canny(gray,20,120,apertureSize = 3)
+	edges = cv2.Canny(gray,80,160,apertureSize = 3)
 	cv2.imwrite('cannylines.jpg', edges)
 	 
-	squares = detectSquares(edges)
+	temp = np.copy(edges)
+
+	squares = detectSquares(temp)
                       
 	if(squares == None):
 		print('did not find any squares')
 		return None, None     
  
-	kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 9))
-	#closed = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, kernel)
-	contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)         
-	cv2.drawContours(img, contours, -1, (0, 255, 0), 2)
-	cv2.imwrite('squares.jpg', img)
+	#kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))
+	#closed = cv2.morphologyEx(edges[:], cv2.MORPH_CLOSE, kernel)
+	#contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)         
+	#cv2.drawContours(img, contours, -1, (0, 255, 0), 2)
+	#cv2.imwrite('squares.jpg', img)
 	
 
 	outer, inner = isolateBoardSquares(squares)
+	print('outer')
+	print outer
 
 	#board = Board(squares[15], squares[0:15])
 	board = Board(outer, inner)
@@ -119,7 +125,8 @@ def detectBoard(img, name=None):
 		
 	for square in board.innerSquares:
 		maxRad = int(max(maxRad, getLongestDimension(square)))
-	maxRad = (maxRad / 2) + 1
+	maxRad = int((maxRad / 2) * 0.9)
+
 	
 	#cv2.circle(img, (squares[15][0][0], squares[15][0][1]), 3, (0, 255, 0), -1)
 	
@@ -127,13 +134,13 @@ def detectBoard(img, name=None):
 	#cv2.imwrite('contours.jpg', img)
 	
 	
-	for point in board.squareCenters:
-		print(point.x, point.y)
-		cv2.circle(img, (point.x, point.y), 3, (0, 255, 0), -1)
+	for cluster in board.squareCenters:
+		print(cluster.center.x, cluster.center.y)
+		cv2.circle(img, (cluster.center.x, cluster.center.y), 3, (0, 255, 0), -1)
 	cv2.imwrite('squarecenters.jpg', img)
 
 	#try dilation if does not work well
-	circles = cv2.HoughCircles(edges, cv2.cv.CV_HOUGH_GRADIENT, 1, 20, param1=50, param2=40, minRadius=0, maxRadius=maxRad)
+	circles = cv2.HoughCircles(edges, cv2.cv.CV_HOUGH_GRADIENT, 1, maxRad, param1=60, param2=30, minRadius=3, maxRadius=maxRad)
 	
 	if(circles == None):
 		print ("no circles found")
@@ -166,8 +173,11 @@ def detectBoard(img, name=None):
 
 
 	cv2.imwrite('houghlines2.jpg',img)
+
 	
-	return board.squareCenters, board.boardState
+
+	return board
+	#return centers, board.boardState
 
 	
 
@@ -175,29 +185,34 @@ def detectXs(board, lines, maxRad, img):
 	centers = board.getOpenCenters()
 	centerMap = defaultdict(list)
 	
-	proximity = maxRad * .5
+	proximity = maxRad * .7
 	
 	xLocations = np.zeros(9)
 	print(proximity)
-	print(centers[7][0].x, centers[7][0].y)
+
 
 	for x1,y1,x2,y2 in lines[0]:
 		p1 = Point(x1, y1)
 		p2 = Point(x2, y2)
 	
 		#print(p1.x, p1.y, p2.x, p2.y)
-		for center, index in centers:
+		for cluster, index in centers:
 			
 			#print(center.x, center.y)
-			if(p1.getDistance(center) <= proximity or p2.getDistance(center) <= proximity):
-				centerMap[index].append(LineSegment(p1, p2))
-				break;
+			if(cluster.centerFound == False):
+				if(p1.getDistance(cluster.center) <= maxRad or p2.getDistance(cluster.center) <= maxRad):
+					centerMap[index].append(LineSegment(p1, p2))
+			else:
+				if(p1.getDistance(cluster.center) <= proximity or p2.getDistance(cluster.center) <= proximity):
+					centerMap[index].append(LineSegment(p1, p2))
+					break;
 				
 	#print(centerMap)
-	minDist = 1
+	minDist = 4
+	minAngle = 15
 	
 	for center, lines in centerMap.iteritems():
-		if(center == 7):
+		if(center == 2):
 			for line in lines:
 				cv2.line(img,(line.point1.x,line.point1.y),(line.point2.x, line.point2.y),(255, 0, 0),2)
 	
@@ -219,9 +234,10 @@ def detectXs(board, lines, maxRad, img):
 					line.point2.getDistance(otherLine.point1) <= minDist or
 					line.point2.getDistance(otherLine.point2) <= minDist):
 					
-					count += 1
-					if(count == 3):
-						break;
+					if(line.getAngleDif(otherLine) > minAngle):
+						count += 1
+						if(count == 3):
+							break;
 						
 			if(count == 3):
 				break;
@@ -351,7 +367,7 @@ def contains(square1, square2):
 	return False
 
 def isolateBoardSquares(squares):
-
+	arealimit = 10000
 	biggest = None
 	index = 0
 	for square in squares:
@@ -365,7 +381,7 @@ def isolateBoardSquares(squares):
 				
 		index += 1
 		
-	if(biggest == None):
+	if(biggest == None or biggest[1] < arealimit):
 		return None, None
 		
 	del squares[biggest[2]]
@@ -388,11 +404,14 @@ def isolateBoardSquares(squares):
 			del squares[index]
 			
 		index = 0
+		area 
 		for square in squares:
 			newSquares = squares[:]
 			del newSquares[index]
 			if(containsNineSquares(square, newSquares)):
-				return isolateBoardSquares(squares)
+				if(area(square) > arealimit):
+					print 'another square contains nine'
+					return isolateBoardSquares(squares)
 			index += 1
 			
 		return biggest[0], squares
