@@ -73,13 +73,13 @@ def detectSquares(edges):
 	contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
 	print('num contours '+str(len(contours)))
 	for cnt in contours:
-		print cnt
+		#print cnt
 		cnt_len = cv2.arcLength(cnt, True)
-		cnt = cv2.approxPolyDP(cnt, 0.02*cnt_len, True)
+		cnt = cv2.approxPolyDP(cnt, 0.025*cnt_len, True)
 		if len(cnt) == 4 and cv2.contourArea(cnt) > 15 and cv2.isContourConvex(cnt):
 			cnt = cnt.reshape(-1, 2)
 			max_cos = np.max([angle_cos( cnt[i], cnt[(i+1) % 4], cnt[(i+2) % 4] ) for i in xrange(4)])
-			if max_cos < 0.25:
+			if max_cos < 0.5:
 				squares.append(cnt)
 				
 	return squares
@@ -93,7 +93,7 @@ def detectBoard(img, name=None):
 	#img = sobel(name)
 	gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	#cv2.imwrite('sobel.jpg', img)
-	edges = cv2.Canny(gray,80,160,apertureSize = 3)
+	edges = cv2.Canny(gray,75,160,apertureSize = 3)
 	cv2.imwrite('cannylines.jpg', edges)
 	 
 	temp = np.copy(edges)
@@ -103,12 +103,17 @@ def detectBoard(img, name=None):
 	if(squares == None):
 		print('did not find any squares')
 		return None
+
+	imgcopy = np.copy(img)
+	imgcopy2 = np.copy(img)
+	imgcopy3 = np.copy(img)
  
 	#kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))
 	#closed = cv2.morphologyEx(edges[:], cv2.MORPH_CLOSE, kernel)
-	#contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)         
-	#cv2.drawContours(img, contours, -1, (0, 255, 0), 2)
-	#cv2.imwrite('squares.jpg', img)
+	contours, hierarchy = cv2.findContours(edges, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)   
+	      
+	cv2.drawContours(img, squares, -1, (0, 255, 0), 2)
+	cv2.imwrite('squares.jpg', img)
 	
 
 	outer, inner = isolateBoardSquares(squares)
@@ -124,9 +129,11 @@ def detectBoard(img, name=None):
 		return None
 		
 	for square in board.innerSquares:
-		maxRad = int(max(maxRad, getLongestDimension(square)))
-	maxRad = int((maxRad / 2) * 0.9)
+		maxRad += getLongestDimension(square)
+	maxRad = maxRad / len(board.innerSquares)
+	maxRad = int((maxRad / 2) * 0.8)
 
+	print 'max rad '+str(maxRad)
 	
 	#cv2.circle(img, (squares[15][0][0], squares[15][0][1]), 3, (0, 255, 0), -1)
 	
@@ -148,31 +155,33 @@ def detectBoard(img, name=None):
 
 		circles = np.uint16(np.around(circles))
 		for i in circles[0,:]:
-			cv2.circle(img, (i[0], i[1]), i[2], (0, 255, 0), 2)
-			cv2.circle(img, (i[0], i[1]), 2, (0, 0, 255), 3)
+			cv2.circle(imgcopy, (i[0], i[1]), i[2], (0, 255, 0), 2)
+			cv2.circle(imgcopy, (i[0], i[1]), 2, (0, 0, 255), 3)
 		
-		board.setCircleLocations(circles)
+		board.setCircleLocations(circles, maxRad)
 	
-		cv2.imwrite('circles.jpg', img)
+		cv2.imwrite('circles.jpg', imgcopy)
 	
 	
 						
 	#CREATE A BORDER AROUND BOARD WITH AT LEAST 2 PIXEL PADDING
 	#THEN DO HOUGH LINES ON THAT PICTURE
-	minLineLength = 8
+	minLineLength = 6
 	maxLineGap = 2
 	cv2.imwrite('cannydilated.jpg', cv2.dilate(edges, None))
 	lines = cv2.HoughLinesP(edges,1,np.pi/180,15,minLineLength,maxLineGap)
+
+	for x1,y1,x2,y2 in lines[0]:
+		cv2.line(imgcopy2,(x1,y1),(x2,y2),(0,255,0),2)
+
+
+	cv2.imwrite('houghlines2.jpg',imgcopy2)
 	
-	xLocations = detectXs(board, lines, maxRad, img)
+	xLocations = detectXs(board, lines, maxRad, imgcopy2)
 	
 	board.setXLocations(xLocations)
 
-	for x1,y1,x2,y2 in lines[0]:
-		cv2.line(img,(x1,y1),(x2,y2),(0,255,0),2)
-
-
-	cv2.imwrite('houghlines2.jpg',img)
+	
 
 	
 
@@ -185,7 +194,7 @@ def detectXs(board, lines, maxRad, img):
 	centers = board.getOpenCenters()
 	centerMap = defaultdict(list)
 	
-	proximity = maxRad * .7
+	proximity = maxRad * .75
 	
 	xLocations = np.zeros(9)
 	print(proximity)
@@ -208,11 +217,11 @@ def detectXs(board, lines, maxRad, img):
 					break;
 				
 	#print(centerMap)
-	minDist = 4
-	minAngle = 15
+	minDist = 7
+	minAngle = 41
 	
 	for center, lines in centerMap.iteritems():
-		if(center == 2):
+		if(center == 7):
 			for line in lines:
 				cv2.line(img,(line.point1.x,line.point1.y),(line.point2.x, line.point2.y),(255, 0, 0),2)
 	
@@ -236,13 +245,13 @@ def detectXs(board, lines, maxRad, img):
 					
 					if(line.getAngleDif(otherLine) > minAngle):
 						count += 1
-						if(count == 3):
+						if(count == 2):
 							break;
 						
-			if(count == 3):
+			if(count == 2):
 				break;
 				
-		if(count == 3):
+		if(count == 2):
 			xLocations[center] = 2
 			
 	print('xlocations')
@@ -392,6 +401,7 @@ def isolateBoardSquares(squares):
 		
 	indexes = []
 	if(containsNineSquares(biggest[0], squares) == False):
+		print('does not have 9 squares')
 		return isolateBoardSquares(squares)
 	else:
 		index = 0
@@ -400,18 +410,22 @@ def isolateBoardSquares(squares):
 				indexes.append(index)
 			index += 1
 		print indexes
-		for index in indexes:
-			del squares[index]
+
+		tempSquares = []
+		for i in range(0,len(squares)):
+			if i not in indexes:
+				tempSquares.append(squares[i])
+				
 			
 		index = 0
 		area 
-		for square in squares:
-			newSquares = squares[:]
+		for square in tempSquares:
+			newSquares = tempSquares[:]
 			del newSquares[index]
 			if(containsNineSquares(square, newSquares)):
 				if(area(square) > arealimit):
 					print 'another square contains nine'
-					return isolateBoardSquares(squares)
+					return isolateBoardSquares(tempSquares)
 			index += 1
 			
 		return biggest[0], squares
@@ -423,8 +437,8 @@ def isolateBoardSquares(squares):
 
 if __name__ == '__main__':
 	img = 'kinect_image.png'
-	img = 'image.jpg'
-	centers, state = detectBoard(None, img)
-	print state
+	img = 'image.png'
+	board = detectBoard(None, img)
+	print board.boardState
 
 	

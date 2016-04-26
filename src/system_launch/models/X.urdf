@@ -14,14 +14,14 @@
       <!-- visual origin is defined w.r.t. link local coordinate system -->
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://system_launch/models/mesh/X_model.dae" scale="0.008 0.008 0.008" />
+        <mesh filename="package://system_launch/models/mesh/X_model.dae" scale="0.008 0.008 0.001" />
       </geometry>
     </visual>
     <collision>
       <!-- collision origin is defined w.r.t. link local coordinate system -->
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://system_launch/models/mesh/X_model.dae" scale="0.008 0.008 0.008" />
+        <mesh filename="package://system_launch/models/mesh/X_model.dae" scale="0.008 0.008 0.001" />
       </geometry>
     </collision>
   </link>

@@ -35,7 +35,7 @@ def callback(data):
 		
 	
 	try:
-		cv2.imwrite('image.jpg', img)
+		cv2.imwrite('image.png', img)
 	except:
 		print("Error writing image")
 		
@@ -45,14 +45,25 @@ def callback(data):
 		print('board could not be detected')
 		return
 
+	print board.boardState
+	
+
 	if(lastBoard == None):
 		lastBoard = board
 		print('board moved, not computing')
 		return
 
-	if(lastBoard.outline != board.outline):
+	#print board.outline
+	#print lastBoard.outline
+ 
+	if(np.array_equal(lastBoard.outline, board.outline) != True):
 		lastBoard = board
 		print('board moved, not computing')
+		return
+
+	if(np.array_equal(lastBoard.boardState, board.boardState) != True):
+		print('last board state changed, wait one frame')
+		lastBoard = board
 		return
 
 	lastBoard = board
@@ -61,13 +72,13 @@ def callback(data):
 	for cluster in board.squareCenters:
 		centers.append(cluster.center)
 	
-	print board.state
 	centers = getWorldCoordinates(centers, data.xyz)
+	print centers
 	
 	result = TicTacToe()
 	result.header = data.header
 	result.centers = centers
-	result.state = board.state
+	result.state = board.boardState
 	
 	publisher.publish(result)
 	

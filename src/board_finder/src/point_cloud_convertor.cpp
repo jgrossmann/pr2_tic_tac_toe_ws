@@ -11,14 +11,22 @@
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>
 #include <sensor_msgs/Image.h>
+#include <tf/transform_listener.h>
+#include <pcl_ros/impl/transforms.hpp>
+#include <pcl_ros/transforms.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <sensor_msgs/PointCloud2.h>
 
 using namespace std;
 
 ros::Publisher publisher;
-
+tf::TransformListener *listener;
+string linkid("base_link");
 
 
 void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
+	sensor_msgs::PointCloud2 tmsg = *msg;
+	
     ostringstream width;
 	width << msg->width;
     ROS_INFO(width.str().c_str());
@@ -27,15 +35,28 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 	height << msg->height;
     ROS_INFO(height.str().c_str());
 
+	std::cout << msg->header.frame_id << std::endl;
+	std::cout << msg->header.stamp << std::endl;
+	/*try {
+		listener->waitForTransform("base_link", msg->header.frame_id, ros::Time::now(), ros::Duration(5.0));
+	}catch(tf::TransformException ex) {
+		ROS_INFO("exception");
+	}
+	ROS_INFO("here");
+	pcl_ros::transformPointCloud(linkid, *msg, tmsg, *listener);
+ 	ROS_INFO("now here");*/
+
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGB>);
-	pcl::fromROSMsg (*msg, *cloud);
+	pcl::fromROSMsg (tmsg, *cloud);
 	
     cloud->width = 640;
 	cloud->height = 480;
 	cloud->points.resize(cloud->width * cloud->height * 3);
 
+	 std::cout << tmsg.header.frame_id << std::endl;
+
 	//short *xyz = new short[cloud->width * cloud->height * 3];
-    std::vector<short unsigned int> xyz(cloud->width * cloud->height * 3);
+    std::vector<float> xyz(cloud->width * cloud->height * 3);
     
 	cv::Mat imageFrame;
 	if (cloud->isOrganized())
@@ -53,6 +74,9 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 		            pcl::PointXYZRGB point = cloud->at(w, h);
 					
 					index = h * w * 3;
+					if(w == 239 && h == 211) {
+						std::cout << point.x << std::endl;
+					}
 					xyz[index] = point.x;
 					xyz[index+1] = point.y;
 					xyz[index+2] = point.z;	
@@ -67,11 +91,11 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 		}
 	}
 	
-	cv_bridge::CvImage bridge = cv_bridge::CvImage(msg->header, "rgb8", imageFrame);
+	cv_bridge::CvImage bridge = cv_bridge::CvImage(tmsg.header, "rgb8", imageFrame);
 	sensor_msgs::ImagePtr outputImage = bridge.toImageMsg();
 
 	board_finder::Kinect_Image newMessage;
-	newMessage.header = msg->header;
+	newMessage.header = tmsg.header;
 	newMessage.rgb = *outputImage;
 	newMessage.width = cloud->width;
 	newMessage.height = cloud->height;

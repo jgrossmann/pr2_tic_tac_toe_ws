@@ -27,13 +27,10 @@
   </link>
   <gazebo reference="O">
     <material>Gazebo/Black</material>
-    <turnGravityOff>true</turnGravityOff>
+    <turnGravityOff>false</turnGravityOff>
     <kp>100000000.0</kp>
     <kd>1.0</kd>
-	<static>true</static>
   </gazebo>
-  <gazebo>
-    <static>true</static>
-  </gazebo>
+
 
 </robot>

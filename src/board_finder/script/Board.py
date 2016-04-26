@@ -20,23 +20,34 @@ class Board():
 		p1 = None
 		p3 = None
 		index = 0
+		if square == None:
+			return None
+
 		for p in square:
 			if(p1 == None):
 				p1 = (p[1], index)
-			if(p3 == None):
-				p3 = (p[1], index)
 			if(p[1] < p1[0]):
 				p1 = (p[1], index)
-			if(p[1] > p3[0]):
-				p3 = (p[1], index)
 			index += 1
 			
 		if(square[(p1[1] + 1) % 4][0] < square[(p1[1] - 1) % 4][0]):
-			index = (p1[1] + 1) % 4
+			p4Index = (p1[1] + 1) % 4
 		else:
-			index = (p1[1] - 1) % 4
+			p4Index = (p1[1] - 1) % 4
 			
-		p4 = (square[index], index)
+		
+		p4 = (square[p4Index], p4Index)
+
+		index = 0
+		for p in square:
+			if(index == p4Index):
+				continue
+			if(p3 == None):
+				p3 = (p[1], index)
+			if(p[1] > p3[0]):
+				p3 = (p[1], index)
+			index += 1
+
 		
 		indexes = [0,1,2,3]
 		for index in indexes:
@@ -141,7 +152,7 @@ class Board():
 		return orderedCenters
 		
 		
-	def setCircleLocations(self, circles):
+	def setCircleLocations(self, circles, maxRad):
 		openCenters = self.squareCenters[:]
 		
 		for i in circles[0,:]:
@@ -158,6 +169,9 @@ class Board():
 						minDist = (dist, index)
 				index += 1
 				
+			if(minDist[0] > maxRad):
+				continue
+
 			if(openCenters[minDist[1]].centerFound == False):
 				openCenters[minDist[1]].center = p
 
@@ -191,6 +205,7 @@ def createClusters(line1, line2, line3, line4):
 	clusters = []
 	
 	ratio = 0.125
+	print line3.point1.x, line3.point1.y, line3.point2.x, line3.point2.y
 	dist1 = line1.point1.getDistance(line1.point2)
 	dist2 = line3.point1.getDistance(line3.point2)
 	distRatio = float(dist1 / dist2)

@@ -72,12 +72,14 @@ public:
     }
 	lookAt("base_link", 1.3, 0.0, .04);
   }
+
+  void moveHeadDefaultPosition()
+  {
+    lookAt("base_link", 1.0, -0.1, .05);
+  }
 };
 
-  vod moveHeadDefaultPosition()
-  {
-    lookAt("base_link", 1.0, 0.0, .05);
-  }
+  
 
 int main(int argc, char** argv)
 {
@@ -85,5 +87,6 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "robot_driver");
 
   RobotHead head;
-  head.shakeHead(2);
+  //head.shakeHead(2);
+  head.moveHeadDefaultPosition();
 }

@@ -11,25 +11,33 @@
   <include file="$(find pr2_gazebo)/launch/pr2_empty_world.launch"/>
 
    <!--Start up moveit in order to plan arm trajectories-->
-   include file="$(find pr2_moveit_config)/launch/move_group.launch"/>
+   <include file="$(find pr2_moveit_config)/launch/move_group.launch"/>
 
   <!-- Add table to the world -->
   <node name="spawn_table" pkg="gazebo_ros" type="spawn_model" 
-   args="-urdf -file $(find system_launch)/models/table.urdf -model table -x 1.0 -y 0.0"
+   args="-urdf -file $(find system_launch)/models/table.urdf -model table -x 0.65 -y 0.0"
    respawn="false" output="screen" />
    
    <!-- Add paper to the world -->
-   <node name="spawn_paper" pkg="gazebo_ros" type="spawn_model" 
-   args="-urdf -file $(find system_launch)/models/tic_tac_toe_board.urdf -model tic_tac_toe -x 0.85 -y 0.1 -z 0.6"
+   <node name="spawn_board" pkg="gazebo_ros" type="spawn_model" 
+   args="-urdf -file $(find system_launch)/models/tic_tac_toe_board.urdf -model tic_tac_toe -x 0.65 -y -.0145 -z 0.6"
    respawn="false" output="screen" />
 
-    <node name="spawn_O" pkg="gazebo_ros" type="spawn_model" 
+    <node name="spawn_O1" pkg="gazebo_ros" type="spawn_model" 
    args="-urdf -file $(find system_launch)/models/O.urdf -model O -x 0.85 -y -0.6 -z 0.6"
+   respawn="false" output="screen" />
+	
+	<node name="spawn_O2" pkg="gazebo_ros" type="spawn_model" 
+   args="-urdf -file $(find system_launch)/models/O.urdf -model O -x 0.85 -y -0.7 -z 0.6"
    respawn="false" output="screen" />
 
    <node name="spawn_X" pkg="gazebo_ros" type="spawn_model" 
    args="-urdf -file $(find system_launch)/models/X.urdf -model X -x 0.85 -y -0.9 -z 0.6"
    respawn="false" output="screen" />
 
+   
+
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find system_launch)/launch/rviz.rviz"/>
+
+  <node pkg="move_head" name="move_head" type="move_head"/>
 </launch>
