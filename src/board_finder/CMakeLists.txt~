@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(board_finder)
 
+##set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+##add_definitions(-std=c++11)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -14,6 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   OpenCV REQUIRED
   cv_bridge
   tf
+  pcl_ros
 )
 
 
@@ -110,7 +113,7 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  CATKIN_DEPENDS message_runtime pcl_ros
+  CATKIN_DEPENDS message_runtime pcl pcl_ros
 #  INCLUDE_DIRS include
 #  LIBRARIES board_finder
 #  CATKIN_DEPENDS rospy
@@ -160,6 +163,8 @@ target_link_libraries(point_cloud_convertor
    ${PCL_LIBRARIES}
    ${OpenCV_LIBRARIES}
  )
+
+
 
 #############
 ## Install ##

@@ -894,6 +894,19 @@ _catkin_empty_exported_target/fast:
 .PHONY : _catkin_empty_exported_target/fast
 
 #=============================================================================
+# Target rules for targets named test_node
+
+# Build rule for target.
+test_node: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_node
+.PHONY : test_node
+
+# fast build rule for target.
+test_node/fast:
+	$(MAKE) -f test/CMakeFiles/test_node.dir/build.make test/CMakeFiles/test_node.dir/build
+.PHONY : test_node/fast
+
+#=============================================================================
 # Target rules for targets named _board_finder_generate_messages_check_deps_Kinect_Image
 
 # Build rule for target.
@@ -1340,6 +1353,7 @@ help:
 	@echo "... visualization_msgs_generate_messages_py"
 	@echo "... move_head"
 	@echo "... _catkin_empty_exported_target"
+	@echo "... test_node"
 	@echo "... _board_finder_generate_messages_check_deps_Kinect_Image"
 	@echo "... _board_finder_generate_messages_check_deps_TicTacToe"
 	@echo "... board_finder_gencpp"

@@ -37,4 +37,5 @@
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find system_launch)/launch/rviz.rviz"/>
 
   <node pkg="move_head" name="move_head" type="move_head"/>
+	
 </launch>

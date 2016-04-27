@@ -20,12 +20,12 @@
 using namespace std;
 
 ros::Publisher publisher;
-tf::TransformListener *listener;
+
 string linkid("base_link");
 
 
 void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
-	sensor_msgs::PointCloud2 tmsg = *msg;
+	sensor_msgs::PointCloud2 tmsg;
 	
     ostringstream width;
 	width << msg->width;
@@ -37,14 +37,22 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 
 	std::cout << msg->header.frame_id << std::endl;
 	std::cout << msg->header.stamp << std::endl;
-	/*try {
-		listener->waitForTransform("base_link", msg->header.frame_id, ros::Time::now(), ros::Duration(5.0));
+
+	tf::StampedTransform transform;
+
+	tf::TransformListener listener;
+	
+	
+	ROS_INFO("looking up transform");
+	try {
+		listener.lookupTransform("/base_link", msg->header.frame_id, msg->header.stamp, transform);
+		pcl_ros::transformPointCloud(linkid, *msg, tmsg, listener);
 	}catch(tf::TransformException ex) {
 		ROS_INFO("exception");
+		return;
 	}
-	ROS_INFO("here");
-	pcl_ros::transformPointCloud(linkid, *msg, tmsg, *listener);
- 	ROS_INFO("now here");*/
+	ROS_INFO("transformed coordinates");
+	
 
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGB>);
 	pcl::fromROSMsg (tmsg, *cloud);
@@ -121,6 +129,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 int main(int argc, char** argv) {
 
 	ros::init(argc, argv, "point_cloud_convertor");
+	ROS_INFO("ros init done");
 	ros::NodeHandle nh;
 	ros::Subscriber sub = nh.subscribe(
 						"/head_mount_kinect/depth_registered/points",

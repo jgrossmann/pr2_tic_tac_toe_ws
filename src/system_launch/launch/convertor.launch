@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="board_finder" name="point_cloud_convertor" type="point_cloud_convertor" launch-prefix="valgrind"/>
+
+  <!--<node pkg="test" name="test_node" type="test_node" launch-prefix="valgrind"/>-->
+</launch>

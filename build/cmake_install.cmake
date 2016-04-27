@@ -120,6 +120,7 @@ IF(NOT CMAKE_INSTALL_LOCAL_ONLY)
   INCLUDE("/home/jg3538/pr2_tic_tac_toe_ws/build/move_arm/cmake_install.cmake")
   INCLUDE("/home/jg3538/pr2_tic_tac_toe_ws/build/move_head/cmake_install.cmake")
   INCLUDE("/home/jg3538/pr2_tic_tac_toe_ws/build/system_launch/cmake_install.cmake")
+  INCLUDE("/home/jg3538/pr2_tic_tac_toe_ws/build/test/cmake_install.cmake")
   INCLUDE("/home/jg3538/pr2_tic_tac_toe_ws/build/board_finder/cmake_install.cmake")
 
 ENDIF(NOT CMAKE_INSTALL_LOCAL_ONLY)

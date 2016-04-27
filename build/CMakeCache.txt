@@ -680,6 +680,9 @@ object_recognition_msgs_DIR:PATH=/opt/ros/indigo/share/object_recognition_msgs/c
 //The directory containing a CMake configuration file for octomap_msgs.
 octomap_msgs_DIR:PATH=/opt/ros/indigo/share/octomap_msgs/cmake
 
+//The directory containing a CMake configuration file for pcl.
+pcl_DIR:PATH=pcl_DIR-NOTFOUND
+
 //The directory containing a CMake configuration file for pcl_conversions.
 pcl_conversions_DIR:PATH=/opt/ros/indigo/share/pcl_conversions/cmake
 
@@ -754,6 +757,12 @@ system_launch_BINARY_DIR:STATIC=/home/jg3538/pr2_tic_tac_toe_ws/build/system_lau
 
 //Value Computed by CMake
 system_launch_SOURCE_DIR:STATIC=/home/jg3538/pr2_tic_tac_toe_ws/src/system_launch
+
+//Value Computed by CMake
+test_BINARY_DIR:STATIC=/home/jg3538/pr2_tic_tac_toe_ws/build/test
+
+//Value Computed by CMake
+test_SOURCE_DIR:STATIC=/home/jg3538/pr2_tic_tac_toe_ws/src/test
 
 //The directory containing a CMake configuration file for tf2.
 tf2_DIR:PATH=/opt/ros/indigo/share/tf2/cmake
@@ -923,7 +932,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_LOCAL_GENERATORS:INTERNAL=6
+CMAKE_NUMBER_OF_LOCAL_GENERATORS:INTERNAL=7
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

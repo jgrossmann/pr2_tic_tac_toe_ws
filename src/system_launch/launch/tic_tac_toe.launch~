@@ -37,4 +37,6 @@
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find system_launch)/launch/rviz.rviz"/>
 
   <node pkg="move_head" name="move_head" type="move_head"/>
+	
+  <node pkg="board_finder" name="point_cloud_convertor" type="point_cloud_convertor" launch-prefix="valgrind"/>
 </launch>
