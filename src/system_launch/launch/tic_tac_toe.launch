@@ -15,21 +15,21 @@
 
   <!-- Add table to the world -->
   <node name="spawn_table" pkg="gazebo_ros" type="spawn_model" 
-   args="-urdf -file $(find system_launch)/models/table.urdf -model table -x 0.65 -y 0.0"
+   args="-urdf -file $(find system_launch)/models/table.urdf -model table -x 0.557 -y 0.00357"
    respawn="false" output="screen" />
    
    <!-- Add paper to the world -->
    <node name="spawn_board" pkg="gazebo_ros" type="spawn_model" 
-   args="-urdf -file $(find system_launch)/models/tic_tac_toe_board.urdf -model tic_tac_toe -x 0.65 -y -.0145 -z 0.6"
+   args="-urdf -file $(find system_launch)/models/tic_tac_toe_board.urdf -model tic_tac_toe -x 0.5084 -y -.0465 -z 0.56"
    respawn="false" output="screen" />
 
     <node name="spawn_O1" pkg="gazebo_ros" type="spawn_model" 
-   args="-urdf -file $(find system_launch)/models/O.urdf -model O -x 0.85 -y -0.6 -z 0.6"
+   args="-urdf -file $(find system_launch)/models/O.urdf -model O -x 0.85 -y -0.6 -z 0.56"
    respawn="false" output="screen" />
 	
 
    <node name="spawn_X" pkg="gazebo_ros" type="spawn_model" 
-   args="-urdf -file $(find system_launch)/models/X.urdf -model X -x 0.85 -y -0.9 -z 0.6"
+   args="-urdf -file $(find system_launch)/models/X.urdf -model X -x 0.85 -y -0.9 -z 0.56"
    respawn="false" output="screen" />
 
    

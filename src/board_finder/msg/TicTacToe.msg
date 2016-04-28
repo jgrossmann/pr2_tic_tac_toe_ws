@@ -1,3 +1,5 @@
 Header header
-uint16[] centers
-uint8[] state
+float32[] x
+float32[] y
+float32[] z
+int32[] state

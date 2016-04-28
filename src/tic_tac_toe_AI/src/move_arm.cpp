@@ -6,8 +6,8 @@ void move_arm(double x, double y, double z, double w, char arm)
   ros::AsyncSpinner spinner(2);
   spinner.start();
   if (arm == 'l') {
- // moveit::planning_interface::MoveGroup l_arm_move_group("left_arm");
-	moveit::planning_interface::MoveGroup l_arm_move_group("l_wrist_flex_link");
+  moveit::planning_interface::MoveGroup l_arm_move_group("left_arm");
+  ROS_INFO("Reference frame: %s", l_arm_move_group.getEndEffectorLink().c_str());
   geometry_msgs::Pose goal_end_effector_pose;
   goal_end_effector_pose.orientation.w = w; //1, .28, .7, 1
   goal_end_effector_pose.position.x = x;
@@ -19,7 +19,7 @@ void move_arm(double x, double y, double z, double w, char arm)
 
   // plan the motion and then move the group to the sampled target 
   l_arm_move_group.move();
-  //ros::Duration(1).sleep();
+  ros::Duration(1).sleep();
   spinner.stop();
   }
 

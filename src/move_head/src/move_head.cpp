@@ -75,7 +75,7 @@ public:
 
   void moveHeadDefaultPosition()
   {
-    lookAt("base_link", 1.0, -0.1, .05);
+    lookAt("base_link", 1.0, -0.1, -0.1);
   }
 };
 

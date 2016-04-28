@@ -12,13 +12,18 @@ from Board import *
 publisher = None
 lastBoard = None
 
-def getWorldCoordinates(centers, coordinates):
-	worldCoordinates = []
+def getWorldCoordinates(centers, coordinates, width):
+	x = [];
+	y = [];
+	z = [];
 	for center in centers:
-		index = center.x * center.y * 3
-		worldCoordinates.append([coordinates[index], coordinates[index+1], coordinates[index+2]])
+		index = center.y * (width * 3) + (center.x * 3)
+		x.append(coordinates[index])
+		y.append(coordinates[index+1])
+		z.append(coordinates[index+2])
+
 		
-	return worldCoordinates
+	return x,y,z
 
 def callback(data):
 	print('callback')
@@ -72,12 +77,14 @@ def callback(data):
 	for cluster in board.squareCenters:
 		centers.append(cluster.center)
 	
-	centers = getWorldCoordinates(centers, data.xyz)
-	print centers
+	x,y,z = getWorldCoordinates(centers, data.xyz, data.width)
+	print x,y,z
 	
 	result = TicTacToe()
 	result.header = data.header
-	result.centers = centers
+	result.x = x
+	result.y = y
+	result.z = z
 	result.state = board.boardState
 	
 	publisher.publish(result)

@@ -1,2 +1,2 @@
-board_finder:move_arm:move_head:system_launch:test
+board_finder:move_arm:move_head:system_launch:test:tic_tac_toe_AI
 -DCATKIN_DEVEL_PREFIX=/home/jg3538/pr2_tic_tac_toe_ws/devel -DCMAKE_INSTALL_PREFIX=/home/jg3538/pr2_tic_tac_toe_ws/install -G Unix Makefiles
