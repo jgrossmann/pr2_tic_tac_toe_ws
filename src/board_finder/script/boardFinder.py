@@ -8,9 +8,11 @@ import board_vision
 from board_finder.msg import Kinect_Image
 from board_finder.msg import TicTacToe
 from Board import *
+from TTT import *
 
 publisher = None
 lastBoard = None
+game = None
 
 def getWorldCoordinates(centers, coordinates, width):
 	x = [];
@@ -89,6 +91,8 @@ def callback(data):
 	
 	publisher.publish(result)
 	
+	game.
+	
 	
 
 def listener():
@@ -102,6 +106,7 @@ def listener():
 	rospy.spin()
 	
 if __name__ == '__main__':
+	game = TTTGame()
 	listener()
 	
 	

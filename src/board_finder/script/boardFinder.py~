@@ -8,6 +8,7 @@ import board_vision
 from board_finder.msg import Kinect_Image
 from board_finder.msg import TicTacToe
 from Board import *
+from TTT import *
 
 publisher = None
 lastBoard = None
@@ -78,7 +79,7 @@ def callback(data):
 		centers.append(cluster.center)
 	
 	x,y,z = getWorldCoordinates(centers, data.xyz, data.width)
-	print centers
+	print x,y,z
 	
 	result = TicTacToe()
 	result.header = data.header
@@ -88,6 +89,8 @@ def callback(data):
 	result.state = board.boardState
 	
 	publisher.publish(result)
+	
+	
 	
 	
 
