@@ -1,4 +1,0 @@
-<launch>
-
-  <node pkg="test" name="test_node" type="test_node" launch-prefix="valgrind"/>
-</launch>

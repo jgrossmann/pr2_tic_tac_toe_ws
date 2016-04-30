@@ -12,7 +12,6 @@ from TTT import *
 
 publisher = None
 lastBoard = None
-game = None
 
 def getWorldCoordinates(centers, coordinates, width):
 	x = [];
@@ -30,6 +29,7 @@ def getWorldCoordinates(centers, coordinates, width):
 def callback(data):
 	print('callback')
 	global lastBoard
+	
 
 	print(rospy.get_caller_id() + " "+ str(data.header.stamp))
 	bridge = CvBridge()
@@ -91,7 +91,6 @@ def callback(data):
 	
 	publisher.publish(result)
 	
-	game.
 	
 	
 
@@ -106,7 +105,7 @@ def listener():
 	rospy.spin()
 	
 if __name__ == '__main__':
-	game = TTTGame()
+	print "started finder"
 	listener()
 	
 	

@@ -1,0 +1,41 @@
+<launch>
+
+  <!--Arguments that can be passed into the launch from the cmd line-->
+  <arg name="gui" default="true"/>
+  <arg name="paused" default="false"/>
+
+  <!--Parameters to be placed on the ros param server-->
+  <param name="/use_sim_time" value="true" />
+
+  <!--Start up the gazebo simulator with the PR2 robot inside it-->
+  <include file="$(find pr2_gazebo)/launch/pr2_empty_world.launch"/>
+
+   <!--Start up moveit in order to plan arm trajectories-->
+   <include file="$(find pr2_moveit_config)/launch/move_group.launch"/>
+
+  <!-- Add table to the world -->
+  <node name="spawn_table" pkg="gazebo_ros" type="spawn_model" 
+   args="-urdf -file $(find system_launch)/models/table.urdf -model table -x 0.557 -y 0.00357"
+   respawn="false" output="screen" />
+   
+   <!-- Add paper to the world -->
+   <node name="spawn_board" pkg="gazebo_ros" type="spawn_model" 
+   args="-urdf -file $(find system_launch)/models/tic_tac_toe_board.urdf -model tic_tac_toe -x 0.55 -y -.0465 -z 0.56"
+   respawn="false" output="screen" />
+
+    <node name="spawn_O1" pkg="gazebo_ros" type="spawn_model" 
+   args="-urdf -file $(find system_launch)/models/O.urdf -model O -x 0.85 -y -0.6 -z 0.56"
+   respawn="false" output="screen" />
+	
+
+   <node name="spawn_X" pkg="gazebo_ros" type="spawn_model" 
+   args="-urdf -file $(find system_launch)/models/X.urdf -model X -x 0.85 -y -0.9 -z 0.56"
+   respawn="false" output="screen" />
+
+   
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find system_launch)/launch/rviz.rviz"/>
+
+  <node pkg="board_finder" name="point_cloud_convertor" type="point_cloud_convertor"/>
+	
+</launch>

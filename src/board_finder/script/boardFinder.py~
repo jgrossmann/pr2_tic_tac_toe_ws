@@ -29,6 +29,7 @@ def getWorldCoordinates(centers, coordinates, width):
 def callback(data):
 	print('callback')
 	global lastBoard
+	
 
 	print(rospy.get_caller_id() + " "+ str(data.header.stamp))
 	bridge = CvBridge()
@@ -93,6 +94,7 @@ def callback(data):
 	
 	
 	
+	
 
 def listener():
 	rospy.init_node('board_finder')
@@ -105,6 +107,7 @@ def listener():
 	rospy.spin()
 	
 if __name__ == '__main__':
+	print "started finder"
 	listener()
 	
 	

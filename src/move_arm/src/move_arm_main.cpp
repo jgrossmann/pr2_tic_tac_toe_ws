@@ -10,8 +10,8 @@ int main(int argc, char **argv)
   //ros::NodeHandle node_handle;
 
   //int a = move_arm(.30, .5, 1, 1,'l'); //write instructions to left arm
-  //move_arm(.30, .5, 1, 1,'l'); //write instructions to left arm
-  move_arm(.63, .088, .7, 1.55, 'l');
+  move_arm(.30, .5, 1, 1,'l'); //write instructions to left arm
+  //move_arm(.63, .088, .7, 1.55, 'l');
   //int b = move_arm(.30, -.5, 1, 1,'r'); //write instructions to left arm
   move_arm(.30, -.5, 1, 1,'r'); //write instructions to left arm
   //move_arm(.549, -.182, 1, 1, 'r');

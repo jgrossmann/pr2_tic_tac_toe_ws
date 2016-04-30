@@ -907,19 +907,6 @@ test_node/fast:
 .PHONY : test_node/fast
 
 #=============================================================================
-# Target rules for targets named robot_AI
-
-# Build rule for target.
-robot_AI: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 robot_AI
-.PHONY : robot_AI
-
-# fast build rule for target.
-robot_AI/fast:
-	$(MAKE) -f tic_tac_toe_AI/CMakeFiles/robot_AI.dir/build.make tic_tac_toe_AI/CMakeFiles/robot_AI.dir/build
-.PHONY : robot_AI/fast
-
-#=============================================================================
 # Target rules for targets named _board_finder_generate_messages_check_deps_Kinect_Image
 
 # Build rule for target.
@@ -1367,7 +1354,6 @@ help:
 	@echo "... move_head"
 	@echo "... _catkin_empty_exported_target"
 	@echo "... test_node"
-	@echo "... robot_AI"
 	@echo "... _board_finder_generate_messages_check_deps_Kinect_Image"
 	@echo "... _board_finder_generate_messages_check_deps_TicTacToe"
 	@echo "... board_finder_gencpp"
