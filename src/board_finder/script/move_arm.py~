@@ -4,10 +4,37 @@ import numpy as np
 import rospy
 import math
 
+class ArmMover:
 
-def move_arm(x, y, z, w, arm):
-	#insert code to move arm
-	pass
+	robot  = moveit_commander.RobotCommander()
+
+	def move_arm_default(self):
+		self.move_arm(.30, .5, 1, 1,'l')
+		self.move_arm(.30, -.5, 1, 1,'r')
+
+	def move_arm(self, x, y, z, w, arm):
+		if(arm == 'r'):
+			group = self.robot.get_group('right_arm')
+		elif arm == 'l':
+			group = self.robot.get_group('left_arm')
+		else:
+			print 'arm must be l or r'
+			return
+
+		pose_target = geometry_msgs.msg.Pose()
+		pose_target.orientation.w = w
+		pose_target.position.x = x
+		pose_target.position.y = y
+		pose_target.position.z = z
+		    #pose_target = group.get_random_pose()
+		print pose_target
+		group.set_pose_target(pose_target)
+		trajectory = group.plan()
+		    rospy.sleep(5)
+		group.go(wait=True)
+		#group.execute(trajectory)
+		rospy.sleep(5)
+		#Dealing with collisions: http://docs.ros.org/hydro/api/pr2_moveit_tutorials/html/planning/scripts/doc/move_group_python_interface_tutorial.html
 
 if __name__ == '__main__':
 	rospy.init_node("moveit_demo_node")
@@ -25,6 +52,7 @@ if __name__ == '__main__':
 	jointValues[5] = -math.pi/4.0
 	group.set_joint_value_target(jointValues)
 
+	print jointValues
 	plan = group.plan()
 
 	#generate a random pose for the end effector
