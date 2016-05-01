@@ -3,6 +3,8 @@ import moveit_commander
 import numpy as np
 import rospy
 import math
+import geometry_msgs.msg
+import moveit_msgs.msg
 
 class ArmMover:
 
@@ -30,10 +32,10 @@ class ArmMover:
 		print pose_target
 		group.set_pose_target(pose_target)
 		trajectory = group.plan()
-		    rospy.sleep(5)
+		rospy.sleep(1)
 		group.go(wait=True)
 		#group.execute(trajectory)
-		rospy.sleep(5)
+		rospy.sleep(2)
 		#Dealing with collisions: http://docs.ros.org/hydro/api/pr2_moveit_tutorials/html/planning/scripts/doc/move_group_python_interface_tutorial.html
 
 if __name__ == '__main__':

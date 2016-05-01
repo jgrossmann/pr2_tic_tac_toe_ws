@@ -94,7 +94,7 @@ def detectBoard(img, name=None):
 	gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	#cv2.imwrite('sobel.jpg', img)
 	edges = cv2.Canny(gray,75,160,apertureSize = 3)
-	cv2.imwrite('cannylines.jpg', edges)
+	#cv2.imwrite('cannylines.jpg', edges)
 	 
 	temp = np.copy(edges)
 
@@ -144,7 +144,7 @@ def detectBoard(img, name=None):
 	for cluster in board.squareCenters:
 		print(cluster.center.x, cluster.center.y)
 		cv2.circle(img, (cluster.center.x, cluster.center.y), 3, (0, 255, 0), -1)
-	cv2.imwrite('squarecenters.jpg', img)
+	#cv2.imwrite('squarecenters.jpg', img)
 
 	#try dilation if does not work well
 	circles = cv2.HoughCircles(edges, cv2.cv.CV_HOUGH_GRADIENT, 1, maxRad, param1=60, param2=30, minRadius=3, maxRadius=maxRad)
@@ -168,7 +168,7 @@ def detectBoard(img, name=None):
 	#THEN DO HOUGH LINES ON THAT PICTURE
 	minLineLength = 6
 	maxLineGap = 2
-	cv2.imwrite('cannydilated.jpg', cv2.dilate(edges, None))
+	#cv2.imwrite('cannydilated.jpg', cv2.dilate(edges, None))
 	lines = cv2.HoughLinesP(edges,1,np.pi/180,15,minLineLength,maxLineGap)
 
 	for x1,y1,x2,y2 in lines[0]:
@@ -225,7 +225,7 @@ def detectXs(board, lines, maxRad, img):
 			for line in lines:
 				cv2.line(img,(line.point1.x,line.point1.y),(line.point2.x, line.point2.y),(255, 0, 0),2)
 	
-	cv2.imwrite('x.jpg', img)
+	#cv2.imwrite('x.jpg', img)
 	
 	for center, lines in centerMap.iteritems():
 		if(center == 8):

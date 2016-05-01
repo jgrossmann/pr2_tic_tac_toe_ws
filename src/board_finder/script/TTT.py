@@ -50,7 +50,7 @@ class TTTGame:
 		#don't pick move until we have a game board in vision
 		#use vision callback to decide move
 		first = 0
-		move_arm_default()
+		self.armMover.move_arm_default()
 		while(first != 1 and first != 2):
 			first = raw_input("Who goes first? (1 = Computer, 2 = Human) ")
 			first = int(first)
@@ -70,6 +70,12 @@ class TTTGame:
 		self.init = True
 			
 
+	def newGamePrompt(self):
+		new_game = ''
+		while(new_game != 'y' and new_game != 'n'):
+			new_game = raw_input("Would you like to play again? (y or n) ")
+		return new_game
+		
 	
 	def updateBoard(self, visionBoard, x, y, z):
 
@@ -120,7 +126,7 @@ class TTTGame:
 			if(self.turn != self.first):
 				self.turn = self.first
 				if(self.turn == self.robot):
-					choice = self.get_computer_move()
+					choice = self.get_computer_move(self.board, self.robot, self.human)[0]
 					self.robotMove(choice)
 				else:
 					self.humanMove()
@@ -158,10 +164,21 @@ class TTTGame:
 		else:
 			arm = 'r'
 
-		self.armMover.move_arm(self.x[choice], self.y[choice], self.z[choice], 1.0, arm)
+		self.armMover.move_arm(self.x[choice]-.07, self.y[choice], self.z[choice]+.08, 1.0, arm)
 		self.spawnModel(self.robot, self.x[choice], self.y[choice], self.z[choice])
 		self.armMover.move_arm_default()
 
+
+	def clearBoard(self):
+		for i in range(0, self.xCount):
+			self.deleteModel("X"+str(i))
+		for i in range(0, self.oCount):
+			self.deleteModel("O"+str(i))
+	
+
+	def deleteModel(self, name):
+		command = "rosservice call gazebo/delete_model '{model_name: "+name+"}'"
+		os.system(command)
 
 
 	#Define the print_board function 
@@ -208,7 +225,11 @@ class TTTGame:
 		choice = 0
 		while(self.board[choice] != " "):
 			choice = raw_input("Please choose an empty space for "+self.human+" ")
-			choice = int(choice)
+			try:
+				choice = int(choice)
+			except ValueError:
+				continue
+
 			if self.board[choice] == " ":
 				choice -= 1
 				self.spawnModel(self.human, self.x[choice], self.y[choice], self.z[choice])
@@ -250,13 +271,14 @@ class TTTGame:
 		#count is the index of this model, because the naming must be unique
 	def spawnModel(self,piece, x, y, z):
 	
-		path_to_models = "/home/cs4167/tmp/test/pr2_example_ws-master/src/system_launch/models/"
+		#print os.getcwd()
+		path_to_models = os.getcwd()+"/src/system_launch/models/"
 		model = ""
 		if (piece == "X"):
 			model = "X.urdf"
 			count = self.xCount
 			self.xCount += 1
-		elif(pice == "O"):
+		elif(piece == "O"):
 			model = "O.urdf"
   			count = self.oCount
 			self.oCount += 1
@@ -264,6 +286,7 @@ class TTTGame:
 			print 'bad piece sent to spawn model'
 			return
 
+		count = piece+str(count)
 		coords = " -x " + str(x) +  " -y " + str(y) + " -z " + str(z)	
 		command = "rosrun gazebo_ros spawn_model -file " + path_to_models + model + " -urdf -model " + str(count) + coords
 		#don't forget to #import os
@@ -283,7 +306,14 @@ def callback(msg):
 
 	result = game.updateBoard(msg.state, msg.x, msg.y, msg.z)
 	if(result == 1):
-		game = TTTGame()
+		game.init = False
+		newGame = game.newGamePrompt()
+		if(newGame == 'y'):
+			game.clearBoard()
+			game = TTTGame()
+		else:
+			game.clearBoard()
+			rospy.signal_shutdown("Game Over")
 
 
 if __name__ == '__main__':
