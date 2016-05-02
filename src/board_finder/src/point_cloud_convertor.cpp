@@ -41,20 +41,20 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 	tf::StampedTransform transform;
 
 
-	ROS_INFO("looking up transform");
+	//ROS_INFO("looking up transform");
 	
 	try {
 		listener->waitForTransform(linkid, msg->header.frame_id,
                               msg->header.stamp, ros::Duration(0.25));
 		listener->lookupTransform(linkid, msg->header.frame_id, msg->header.stamp, transform);
-		ROS_INFO("looked up transform");
+		//ROS_INFO("looked up transform");
 		pcl_ros::transformPointCloud(linkid, *msg, tmsg, *listener);
 	}catch(tf::TransformException ex) {
-		ROS_INFO("exception");
-		std::cerr << ex.what();
+		//ROS_INFO("exception");
+		//std::cerr << ex.what();
 		return;
 	}
-	ROS_INFO("transformed coordinates");
+	//ROS_INFO("transformed coordinates");
 
 
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGB>);
@@ -143,7 +143,7 @@ int main(int argc, char** argv) {
 	ros::NodeHandle nh;
 	listener = new (tf::TransformListener);
 
-	publisher = nh.advertise<board_finder::Kinect_Image>("board_finder/Kinect_Image", 1);
+	publisher = nh.advertise<board_finder::Kinect_Image>("board_finder/Kinect_Image", 2);
  	ros::Rate loop_rate(2);
 
 	ros::Subscriber sub = nh.subscribe(

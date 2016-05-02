@@ -6,6 +6,7 @@ import random
 from move_arm import *
 from board_finder.msg import TicTacToe
 import os
+from threading import *
 
 
 game = None
@@ -26,7 +27,7 @@ def print_header():
 
 """
 
-
+lock = Lock()
 
 
 class TTTGame:
@@ -50,10 +51,16 @@ class TTTGame:
 		#don't pick move until we have a game board in vision
 		#use vision callback to decide move
 		first = 0
-		self.armMover.move_arm_default()
+		self.armMover.move_arm_default('l')
+		self.armMover.move_arm_default('r')
 		while(first != 1 and first != 2):
 			first = raw_input("Who goes first? (1 = Computer, 2 = Human) ")
-			first = int(first)
+			
+			try:
+				first = int(first)
+			catch ValueError:
+				continue
+
 			if first == 1:
 				self.robot = "O"
 				self.first = self.robot
@@ -78,8 +85,9 @@ class TTTGame:
 		
 	
 	def updateBoard(self, visionBoard, x, y, z):
-
+		
 		index = 1
+		print visionBoard
 		for space in visionBoard:
 			if(space == 0):
 				self.board[index] = " "
@@ -89,7 +97,7 @@ class TTTGame:
 				self.board[index] = "X"
 			else:
 				print ('bad value in board')
-			
+	
 			index += 1
 
 		self.x = x
@@ -99,16 +107,19 @@ class TTTGame:
 		if(self.is_board_full()):
 			print "tie game"
 			return 1
-		
+
 		if(self.is_winner(self.robot)):
 			print self.robot+" wins the game"
+			self.board = ["", " ", " ", " ", " ", " ", " ", " ", " ", " "]
 			return 1
 
 		if(self.is_winner(self.human)):
 			print self.human+" wins the game"
+			self.board = ["", " ", " ", " ", " ", " ", " ", " ", " ", " "]
 			return 1
 
 		self.whoseTurn()
+		
 		return 0
 
 	
@@ -164,12 +175,21 @@ class TTTGame:
 		else:
 			arm = 'r'
 
-		self.armMover.move_arm(self.x[choice]-.07, self.y[choice], self.z[choice]+.08, 1.0, arm)
+		'''
+		if(choice == 7):
+			arm = 'r'
+		elif(choice == 9):
+			arm = 'l'
+		'''
+
+		self.armMover.move_arm(self.x[choice]-.17, self.y[choice], self.z[choice]+.38, 1.0, arm)
+		self.armMover.move_arm(self.x[choice]-.17, self.y[choice], self.z[choice]+.08, 1.0, arm)
 		self.spawnModel(self.robot, self.x[choice], self.y[choice], self.z[choice])
-		self.armMover.move_arm_default()
+		self.armMover.move_arm_default(arm, self.x[choice]-.17, self.y[choice], self.z[choice]+.08)
 
 
 	def clearBoard(self):
+		self.board = ["", " ", " ", " ", " ", " ", " ", " ", " ", " "]
 		for i in range(0, self.xCount):
 			self.deleteModel("X"+str(i))
 		for i in range(0, self.oCount):
@@ -227,8 +247,11 @@ class TTTGame:
 			choice = raw_input("Please choose an empty space for "+self.human+" ")
 			try:
 				choice = int(choice)
-			except ValueError:
+			except TypeError:
 				continue
+
+			if(choice < 1 or choice > 9):
+				choice = 0
 
 			if self.board[choice] == " ":
 				choice -= 1
@@ -297,8 +320,12 @@ class TTTGame:
 def callback(msg):
 	global game
 	
+	if(abs(rospy.get_time() - (msg.header.stamp.secs + msg.header.stamp.nsecs / 100000000.0 + .200)) > 0.200):
+		return
+		
+
 	if(game == None):
-		game = TTTGame()
+		return
 
 	#don't care about board until the game is started
 	if(game.init == False):
@@ -316,10 +343,12 @@ def callback(msg):
 			rospy.signal_shutdown("Game Over")
 
 
+
 if __name__ == '__main__':
 	rospy.init_node('game')
+	rospy.Subscriber("board_finder/TicTacToe", TicTacToe, callback, queue_size=2)
 	global game
-	rospy.Subscriber("board_finder/TicTacToe", TicTacToe, callback)
+	game = TTTGame()
 	print("Starting game node")
 	rospy.spin()
 

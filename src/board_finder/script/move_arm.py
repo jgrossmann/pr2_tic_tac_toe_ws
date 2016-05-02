@@ -10,11 +10,19 @@ class ArmMover:
 
 	robot  = moveit_commander.RobotCommander()
 
-	def move_arm_default(self):
-		self.move_arm(.30, .5, 1, 1,'l')
-		self.move_arm(.30, -.5, 1, 1,'r')
+	def move_arm_default(self, arm, x=None, y=None, z=None):
+		if(arm == 'l'):
+			if(x != None and y != None and z != None):
+				self.move_arm(x, y, z+.3, 1, 'l')
+			
+			self.move_arm(.30, .5, 1, 1,'l')
+		elif(arm == 'r'):
+			if(x != None and y != None and z != None):
+				self.move_arm(x, y, z+.3, 1, 'r')
+			self.move_arm(.30, -.5, 1, 1,'r')
 
 	def move_arm(self, x, y, z, w, arm):
+		
 		if(arm == 'r'):
 			group = self.robot.get_group('right_arm')
 		elif arm == 'l':
@@ -31,11 +39,11 @@ class ArmMover:
 		    #pose_target = group.get_random_pose()
 		print pose_target
 		group.set_pose_target(pose_target)
-		trajectory = group.plan()
-		rospy.sleep(2)
-		group.go(wait=True)
+		#trajectory = group.plan()
+		#rospy.sleep(2)
+		print(group.go(wait=True))
 		#group.execute(trajectory)
-		rospy.sleep(2)
+		rospy.sleep(1)
 		#Dealing with collisions: http://docs.ros.org/hydro/api/pr2_moveit_tutorials/html/planning/scripts/doc/move_group_python_interface_tutorial.html
 
 if __name__ == '__main__':
