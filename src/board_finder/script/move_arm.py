@@ -6,10 +6,13 @@ import math
 import geometry_msgs.msg
 import moveit_msgs.msg
 
+
+#class for moving robot arms
 class ArmMover:
 
 	robot  = moveit_commander.RobotCommander()
 
+	#move arm to default position
 	def move_arm_default(self, arm, x=None, y=None, z=None):
 		if(arm == 'l'):
 			if(x != None and y != None and z != None):
@@ -21,6 +24,7 @@ class ArmMover:
 				self.move_arm(x, y, z+.3, 1, 'r')
 			self.move_arm(.30, -.5, 1, 1,'r')
 
+	#move arm according to coordinates
 	def move_arm(self, x, y, z, w, arm):
 		
 		if(arm == 'r'):
@@ -37,11 +41,13 @@ class ArmMover:
 		pose_target.position.y = y
 		pose_target.position.z = z
 		    #pose_target = group.get_random_pose()
-		print pose_target
+		#print pose_target
 		group.set_pose_target(pose_target)
 		trajectory = group.plan()
 		index = 1
-		#print trajectory
+
+		#if did not find a trajectory, try again 4 more times
+		#sometimes it does not find it on first couple tries
 		while(len(trajectory.joint_trajectory.joint_names) == 0):
 			if(index > 5):
 				print 'could not find plan'
@@ -57,6 +63,9 @@ class ArmMover:
 		rospy.sleep(.25)
 		#Dealing with collisions: http://docs.ros.org/hydro/api/pr2_moveit_tutorials/html/planning/scripts/doc/move_group_python_interface_tutorial.html
 
+
+
+#TESTING ONLY
 if __name__ == '__main__':
 	rospy.init_node("moveit_demo_node")
 

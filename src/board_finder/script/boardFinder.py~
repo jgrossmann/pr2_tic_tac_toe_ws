@@ -10,10 +10,9 @@ from board_finder.msg import TicTacToe
 from Board import *
 from TTT import *
 
-publisher = None  #publishes vision data to AI
-lastBoard = None  #lastBoard sent from vision
+publisher = None
+lastBoard = None
 
-#gets the x y and z coordinate arrays from the xyz message array
 def getWorldCoordinates(centers, coordinates, width):
 	x = [];
 	y = [];
@@ -27,11 +26,12 @@ def getWorldCoordinates(centers, coordinates, width):
 		
 	return x,y,z
 
-
-#callback from receiving transformed kinect message
 def callback(data):
+	print('callback')
 	global lastBoard
 	
+
+	print(rospy.get_caller_id() + " "+ str(data.header.stamp))
 	bridge = CvBridge()
 	
 	try:
@@ -40,21 +40,21 @@ def callback(data):
 	except CvBridgeError as e:
 		print(e)
 		
-	'''
+	
 	try:
 		cv2.imwrite('image.png', img)
 	except:
 		print("Error writing image")
-	'''
 		
-	#vision algorithms to detect the board
 	board = board_vision.detectBoard(img)
 
 	if(board == None):
 		print('board could not be detected')
 		return
+
+	print board.boardState
 	
-	#if first board, don't do anything for accuracy
+
 	if(lastBoard == None):
 		lastBoard = board
 		print('board moved, not computing')
@@ -63,14 +63,11 @@ def callback(data):
 	#print board.outline
 	#print lastBoard.outline
  
-	#only use board if it is in the same location for 2 frames to eliminate
-	#instability
 	if(np.array_equal(lastBoard.outline, board.outline) != True):
 		lastBoard = board
 		print('board moved, not computing')
 		return
 
-	#only use a board if it is the same state for 2 frames to eliminate instability
 	if(np.array_equal(lastBoard.boardState, board.boardState) != True):
 		print('last board state changed, wait one frame')
 		lastBoard = board
@@ -83,6 +80,7 @@ def callback(data):
 		centers.append(cluster.center)
 	
 	x,y,z = getWorldCoordinates(centers, data.xyz, data.width)
+	print x,y,z
 	
 	result = TicTacToe()
 	result.header = data.header
@@ -91,7 +89,6 @@ def callback(data):
 	result.z = z
 	result.state = board.boardState
 	
-	#publish the board state as well as the real world xyz coordinates to the AI
 	publisher.publish(result)
 	
 	

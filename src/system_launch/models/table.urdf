@@ -160,7 +160,7 @@
     <selfCollide>true</selfCollide>
   </gazebo>
   <gazebo>
-    <static>true</static>
+    <static>false</static>
     <canonicalBody>table_top_link</canonicalBody>
   </gazebo>
 </robot>

@@ -177,7 +177,7 @@ class Board():
 			self.boardState[minDist[1]] = 1
 
 		
-	#set detected X's to board state
+		
 	def setXLocations(self, locations):
 	
 		index = 0
@@ -198,10 +198,7 @@ class Board():
 		return centers
 			
 
-#create initial clusters to find board square centers
-#start by using symmetry to find initial locations of centers of each square
-#then, use ratio due to perspective rendering of 3d to 2d to compensate for any
-#elongation in the board
+
 def createClusters(line1, line2, line3, line4):
 	clusters = []
 	

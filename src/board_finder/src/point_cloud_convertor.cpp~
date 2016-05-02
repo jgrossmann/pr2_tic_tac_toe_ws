@@ -19,32 +19,30 @@
 
 using namespace std;
 
-tf::TransformListener *listener; //finds transform between reference states
-ros::Publisher publisher;	     //publishes transformed kinect images to vision
-string linkid("odom_combined");	 //name of reference frame to use
+tf::TransformListener *listener;
+ros::Publisher publisher;
+string linkid("odom_combined");
 
 
-//receives kinect depth_registered points from connect
 void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 	sensor_msgs::PointCloud2 tmsg;
 
 	ostringstream width;
 	width << msg->width;
-	//ROS_INFO(width.str().c_str());
+	ROS_INFO(width.str().c_str());
 
 	ostringstream height;
 	height << msg->height;
-	//ROS_INFO(height.str().c_str());
+	ROS_INFO(height.str().c_str());
 
-	//std::cout << msg->header.frame_id << std::endl;
-	//std::cout << msg->header.stamp << std::endl;
+	std::cout << msg->header.frame_id << std::endl;
+	std::cout << msg->header.stamp << std::endl;
 
 	tf::StampedTransform transform;
 
 
 	//ROS_INFO("looking up transform");
 	
-	//transform the kinect image to odom_combined reference frame
 	try {
 		listener->waitForTransform(linkid, msg->header.frame_id,
                               msg->header.stamp, ros::Duration(0.25));
@@ -62,18 +60,15 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 	pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGB>);
 	pcl::fromROSMsg (tmsg, *cloud);
 
-	//must set the height and width of pointcloud to use pcl
 	cloud->width = 640;
 	cloud->height = 480;
 	cloud->points.resize(cloud->width * cloud->height * 3);
 
-	 //std::cout << tmsg.header.frame_id << std::endl;
+	 std::cout << tmsg.header.frame_id << std::endl;
 
-	//xyz array to send to vision
+	//short *xyz = new short[cloud->width * cloud->height * 3];
 	std::vector<float> xyz(cloud->width * cloud->height * 3);
 
-	//separate the RGB image from XYZ coordinates
-	//set the xyz coordinates into their own array
 	cv::Mat imageFrame;
 	if (cloud->isOrganized())
 	{
@@ -123,12 +118,11 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 
 	newMessage.xyz = xyz;
 
-	//publish transformed and separated image and xyz to vision
+
 	publisher.publish(newMessage);
 
 
-	/*
-	TESTING
+
 	vector<int> compression_params;
 	compression_params.push_back(CV_IMWRITE_PNG_COMPRESSION);
 	compression_params.push_back(9);
@@ -138,7 +132,7 @@ void callback(const sensor_msgs::PointCloud2::ConstPtr& msg) {
 
 	//send message on publisher
 	//have to create a message type first
-	*/
+
 }
 
 

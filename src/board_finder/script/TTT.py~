@@ -10,8 +10,7 @@ from threading import *
 
 
 game = None
-#Define the board
-#board = ["", " ", " ", " ", " ", " ", " ", " ", " ", " "]
+
 
 #Print the header
 def print_header():
@@ -29,7 +28,7 @@ def print_header():
 
 lock = Lock()
 
-
+#Each instance represents a single game of tic tac toe
 class TTTGame:
 	board = None 
 	x = None
@@ -53,12 +52,14 @@ class TTTGame:
 		first = 0
 		self.armMover.move_arm_default('l')
 		self.armMover.move_arm_default('r')
+
+		#who goes first?
 		while(first != 1 and first != 2):
 			first = raw_input("Who goes first? (1 = Computer, 2 = Human) ")
 			
 			try:
 				first = int(first)
-			catch ValueError:
+			except:
 				continue
 
 			if first == 1:
@@ -84,10 +85,13 @@ class TTTGame:
 		return new_game
 		
 	
+	#updates board state with vision board state
+	#determines if there is a winner or the game is a tie
+	#figures out whose turn it is
 	def updateBoard(self, visionBoard, x, y, z):
 		
 		index = 1
-		print visionBoard
+		#update board
 		for space in visionBoard:
 			if(space == 0):
 				self.board[index] = " "
@@ -122,7 +126,7 @@ class TTTGame:
 		
 		return 0
 
-	
+	#figure out whose move it is based on number of X's or O's
 	def whoseTurn(self):
 		countX = 0
 		countO = 0
@@ -132,7 +136,7 @@ class TTTGame:
 			elif(space == "X"):
 				countX += 1
 			
-		print countO, countX
+		#print countO, countX
 		if(countO == countX):
 			if(self.turn != self.first):
 				self.turn = self.first
@@ -165,7 +169,7 @@ class TTTGame:
 				
 		
 
-
+	#moves the arm to the specified square on the board
 	def robotMove(self, choice):
 		#make robot move to coordinates based on choice
 		print 'robot chose '+str(choice)
@@ -182,9 +186,17 @@ class TTTGame:
 			arm = 'l'
 		'''
 
+		#move arm to an intermediate waypoint 30 cm above chosen point
 		self.armMover.move_arm(self.x[choice]-.17, self.y[choice], self.z[choice]+.38, 1.0, arm)
+
+		#move arm to 8 cm above the chosen square position
 		self.armMover.move_arm(self.x[choice]-.17, self.y[choice], self.z[choice]+.08, 1.0, arm)
+
+		#make model appear, this should be substitued for stamping the spot
+		#or dropping a token, or drawing a symbol in future
 		self.spawnModel(self.robot, self.x[choice], self.y[choice], self.z[choice])
+
+		#move arm back to default position		
 		self.armMover.move_arm_default(arm, self.x[choice]-.17, self.y[choice], self.z[choice]+.08)
 
 
@@ -195,7 +207,7 @@ class TTTGame:
 		for i in range(0, self.oCount):
 			self.deleteModel("O"+str(i))
 	
-
+	#delete a model from gazebo
 	def deleteModel(self, name):
 		command = "rosservice call gazebo/delete_model '{model_name: "+name+"}'"
 		os.system(command)
@@ -215,6 +227,7 @@ class TTTGame:
 		print " "+self.board[7]+" | "+self.board[8]+" | "+self.board[9]+"  "
 		print "   |   |   "
 	
+
 	def is_winner(self, player, board = None):
 		if(board == None):
 			board = self.board
@@ -231,6 +244,7 @@ class TTTGame:
 		else:
 			return False
 		
+	#tie game
 	def is_board_full(self, board = None):
 		if board == None:
 			board = self.board
@@ -240,6 +254,8 @@ class TTTGame:
 			return True
 			
 			
+	#human inputs space to place symbol. Must be available space between
+	#1 and 9
 	def humanMove(self):
 		print 'human move'
 		choice = 0
@@ -247,7 +263,8 @@ class TTTGame:
 			choice = raw_input("Please choose an empty space for "+self.human+" ")
 			try:
 				choice = int(choice)
-			except TypeError:
+			except:
+				choice = 0
 				continue
 
 			if(choice < 1 or choice > 9):
@@ -264,6 +281,7 @@ class TTTGame:
 		#automatically make piece appear in specified choice in gazebo
 		
 		
+	#Minimax algorithm for robot to pick optimal 
 	def get_computer_move(self, board, shape, otherShape):
 	
 		index = 0

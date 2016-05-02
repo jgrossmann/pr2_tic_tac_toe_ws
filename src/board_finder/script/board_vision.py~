@@ -247,14 +247,10 @@ def contains(square1, square2):
 	
 	return False
 
-
-#find tic tac toe board outline and 9 squares within outline
-#outline is the smallest square in image that contains 9 smaller squares
 def isolateBoardSquares(squares):
 	arealimit = 10000
 	biggest = None
 	index = 0
-	#find biggest square
 	for square in squares:
 		size = area(square)
 		
@@ -265,17 +261,17 @@ def isolateBoardSquares(squares):
 				biggest = (square, size, index)
 				
 		index += 1
-	
-	#biggest must be bigger than areaLimit
+		
 	if(biggest == None or biggest[1] < arealimit):
 		return None, None
 		
 	del squares[biggest[2]]
+	print('biggest')
+	print(biggest[0], biggest[1], biggest[2])
 	if(len(squares) < 9):
 		return None, None
 		
 	indexes = []
-	#biggest square must contain 9 smaller squares
 	if(containsNineSquares(biggest[0], squares) == False):
 		print('does not have 9 squares')
 		return isolateBoardSquares(squares)
@@ -285,6 +281,7 @@ def isolateBoardSquares(squares):
 			if(contains(biggest[0], square) == False):
 				indexes.append(index)
 			index += 1
+		print indexes
 
 		tempSquares = []
 		for i in range(0,len(squares)):
@@ -294,8 +291,6 @@ def isolateBoardSquares(squares):
 			
 		index = 0
 		area 
-		#if any square within the current big square also contains 9 smaller
-		#squares, then this is the new biggest square and process repeats
 		for square in tempSquares:
 			newSquares = tempSquares[:]
 			del newSquares[index]
@@ -311,7 +306,7 @@ def isolateBoardSquares(squares):
 		
 		
 
-#testing
+
 if __name__ == '__main__':
 	img = 'kinect_image.png'
 	img = 'image.png'

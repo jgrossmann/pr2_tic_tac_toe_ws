@@ -1,8 +1,0 @@
-prefix=/home/jg3538/pr2_tic_tac_toe_ws/install
-
-Name: board_finder
-Description: Description of board_finder
-Version: 0.0.0
-Cflags: -I/home/jg3538/pr2_tic_tac_toe_ws/install/include
-Libs: -L/home/jg3538/pr2_tic_tac_toe_ws/install/lib 
-Requires: message_runtime pcl pcl_ros
