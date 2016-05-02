@@ -58,7 +58,7 @@ class TTTGame:
 			
 			try:
 				first = int(first)
-			except ValueError:
+			catch ValueError:
 				continue
 
 			if first == 1:

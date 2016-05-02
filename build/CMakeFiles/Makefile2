@@ -1939,56 +1939,6 @@ clean: system_launch/CMakeFiles/_catkin_empty_exported_target.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Directory level rules for directory test
-
-# Convenience name for "all" pass in the directory.
-test/all: test/CMakeFiles/test_node.dir/all
-.PHONY : test/all
-
-# Convenience name for "clean" pass in the directory.
-test/clean: test/CMakeFiles/test_node.dir/clean
-.PHONY : test/clean
-
-# Convenience name for "preinstall" pass in the directory.
-test/preinstall:
-.PHONY : test/preinstall
-
-#=============================================================================
-# Target rules for target test/CMakeFiles/test_node.dir
-
-# All Build rule for target.
-test/CMakeFiles/test_node.dir/all:
-	$(MAKE) -f test/CMakeFiles/test_node.dir/build.make test/CMakeFiles/test_node.dir/depend
-	$(MAKE) -f test/CMakeFiles/test_node.dir/build.make test/CMakeFiles/test_node.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/jg3538/pr2_tic_tac_toe_ws/build/CMakeFiles  16
-	@echo "Built target test_node"
-.PHONY : test/CMakeFiles/test_node.dir/all
-
-# Include target in all.
-all: test/CMakeFiles/test_node.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-test/CMakeFiles/test_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jg3538/pr2_tic_tac_toe_ws/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test_node.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jg3538/pr2_tic_tac_toe_ws/build/CMakeFiles 0
-.PHONY : test/CMakeFiles/test_node.dir/rule
-
-# Convenience name for target.
-test_node: test/CMakeFiles/test_node.dir/rule
-.PHONY : test_node
-
-# clean rule for target.
-test/CMakeFiles/test_node.dir/clean:
-	$(MAKE) -f test/CMakeFiles/test_node.dir/build.make test/CMakeFiles/test_node.dir/clean
-.PHONY : test/CMakeFiles/test_node.dir/clean
-
-# clean rule for target.
-clean: test/CMakeFiles/test_node.dir/clean
-.PHONY : clean
-
-#=============================================================================
 # Directory level rules for directory board_finder
 
 # Convenience name for "all" pass in the directory.
@@ -2129,10 +2079,10 @@ clean: board_finder/CMakeFiles/board_finder_gencpp.dir/clean
 # Target rules for target board_finder/CMakeFiles/board_finder_generate_messages.dir
 
 # All Build rule for target.
-board_finder/CMakeFiles/board_finder_generate_messages.dir/all: board_finder/CMakeFiles/board_finder_generate_messages_lisp.dir/all
 board_finder/CMakeFiles/board_finder_generate_messages.dir/all: board_finder/CMakeFiles/board_finder_generate_messages_eus.dir/all
-board_finder/CMakeFiles/board_finder_generate_messages.dir/all: board_finder/CMakeFiles/board_finder_generate_messages_py.dir/all
 board_finder/CMakeFiles/board_finder_generate_messages.dir/all: board_finder/CMakeFiles/board_finder_generate_messages_cpp.dir/all
+board_finder/CMakeFiles/board_finder_generate_messages.dir/all: board_finder/CMakeFiles/board_finder_generate_messages_lisp.dir/all
+board_finder/CMakeFiles/board_finder_generate_messages.dir/all: board_finder/CMakeFiles/board_finder_generate_messages_py.dir/all
 	$(MAKE) -f board_finder/CMakeFiles/board_finder_generate_messages.dir/build.make board_finder/CMakeFiles/board_finder_generate_messages.dir/depend
 	$(MAKE) -f board_finder/CMakeFiles/board_finder_generate_messages.dir/build.make board_finder/CMakeFiles/board_finder_generate_messages.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/jg3538/pr2_tic_tac_toe_ws/build/CMakeFiles 
@@ -2167,8 +2117,8 @@ clean: board_finder/CMakeFiles/board_finder_generate_messages.dir/clean
 # Target rules for target board_finder/CMakeFiles/board_finder_generate_messages_cpp.dir
 
 # All Build rule for target.
-board_finder/CMakeFiles/board_finder_generate_messages_cpp.dir/all: move_arm/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
 board_finder/CMakeFiles/board_finder_generate_messages_cpp.dir/all: move_arm/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/all
+board_finder/CMakeFiles/board_finder_generate_messages_cpp.dir/all: move_arm/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
 board_finder/CMakeFiles/board_finder_generate_messages_cpp.dir/all: board_finder/CMakeFiles/_board_finder_generate_messages_check_deps_TicTacToe.dir/all
 board_finder/CMakeFiles/board_finder_generate_messages_cpp.dir/all: board_finder/CMakeFiles/_board_finder_generate_messages_check_deps_Kinect_Image.dir/all
 	$(MAKE) -f board_finder/CMakeFiles/board_finder_generate_messages_cpp.dir/build.make board_finder/CMakeFiles/board_finder_generate_messages_cpp.dir/depend
@@ -2233,8 +2183,8 @@ clean: board_finder/CMakeFiles/board_finder_generate_messages_eus.dir/clean
 # Target rules for target board_finder/CMakeFiles/board_finder_generate_messages_lisp.dir
 
 # All Build rule for target.
-board_finder/CMakeFiles/board_finder_generate_messages_lisp.dir/all: move_arm/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
 board_finder/CMakeFiles/board_finder_generate_messages_lisp.dir/all: move_arm/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/all
+board_finder/CMakeFiles/board_finder_generate_messages_lisp.dir/all: move_arm/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
 board_finder/CMakeFiles/board_finder_generate_messages_lisp.dir/all: board_finder/CMakeFiles/_board_finder_generate_messages_check_deps_TicTacToe.dir/all
 board_finder/CMakeFiles/board_finder_generate_messages_lisp.dir/all: board_finder/CMakeFiles/_board_finder_generate_messages_check_deps_Kinect_Image.dir/all
 	$(MAKE) -f board_finder/CMakeFiles/board_finder_generate_messages_lisp.dir/build.make board_finder/CMakeFiles/board_finder_generate_messages_lisp.dir/depend
@@ -2267,8 +2217,8 @@ clean: board_finder/CMakeFiles/board_finder_generate_messages_lisp.dir/clean
 # Target rules for target board_finder/CMakeFiles/board_finder_generate_messages_py.dir
 
 # All Build rule for target.
-board_finder/CMakeFiles/board_finder_generate_messages_py.dir/all: move_arm/CMakeFiles/std_msgs_generate_messages_py.dir/all
 board_finder/CMakeFiles/board_finder_generate_messages_py.dir/all: move_arm/CMakeFiles/sensor_msgs_generate_messages_py.dir/all
+board_finder/CMakeFiles/board_finder_generate_messages_py.dir/all: move_arm/CMakeFiles/std_msgs_generate_messages_py.dir/all
 board_finder/CMakeFiles/board_finder_generate_messages_py.dir/all: board_finder/CMakeFiles/_board_finder_generate_messages_check_deps_TicTacToe.dir/all
 board_finder/CMakeFiles/board_finder_generate_messages_py.dir/all: board_finder/CMakeFiles/_board_finder_generate_messages_check_deps_Kinect_Image.dir/all
 	$(MAKE) -f board_finder/CMakeFiles/board_finder_generate_messages_py.dir/build.make board_finder/CMakeFiles/board_finder_generate_messages_py.dir/depend

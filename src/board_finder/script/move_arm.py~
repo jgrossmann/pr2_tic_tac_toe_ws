@@ -41,7 +41,7 @@ class ArmMover:
 		group.set_pose_target(pose_target)
 		trajectory = group.plan()
 		index = 1
-		#print trajectory
+		print trajectory
 		while(len(trajectory.joint_trajectory.joint_names) == 0):
 			if(index > 5):
 				print 'could not find plan'

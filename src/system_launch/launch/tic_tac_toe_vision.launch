@@ -1,0 +1,8 @@
+<launch>
+
+  <node name="move_head" pkg="move_head" type="move_head"/>
+
+  <node name="boardFinder" pkg="board_finder" type="boardFinder.py"/>
+
+	
+</launch>
