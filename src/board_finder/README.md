@@ -4,6 +4,8 @@ Authors:
 John Grossmann
 Vaibhav Vavilala
 
+Link to video: https://www.youtube.com/watch?v=giZJETH3FaA
+
 This software was tested with ROS Indigo.
 
 To use, source /opt/ros/indigo/setup.bash or wherever the ros indigo setup.bash
