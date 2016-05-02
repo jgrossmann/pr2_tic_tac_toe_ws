@@ -12,8 +12,6 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   message_generation
-  PCL REQUIRED
-  OpenCV REQUIRED
   cv_bridge
   tf
   pcl_ros
